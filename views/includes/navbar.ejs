@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
+    <button class="navbar-toggler theme-aware" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-controls="navbarOffcanvas" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end theme-aware" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="navbarOffcanvasLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="navbar-nav">
+          <a class="nav-link" href="/listings">Explore</a>
+        </div>
+        <div class="navbar-nav ms-auto">
+           <form class="d-flex" role="search" method="GET" action="/listings/search">
+                <input class="form-control me-2" type="search" name="keyword" placeholder="Search Destination" aria-label="Search"/>
+                <button class="btn-search" type="submit">
+                  <i class="fa-solid fa-magnifying-glass"></i>Search</button>
+           </form>
+        </div>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="/listings/newlisting">Add New Listing</a>
+          <% if (!currentUser) { %>
+            <a class="nav-link" href="/signup">
+              <div class="user-avatar">
+                <i class="fa-solid fa-user-plus" style="font-size: 20px;"></i>
+                <span class="username">SignUp</span> 
+              </div>
+            </a>
+            <a class="nav-link" href="/login">
+              <div class="user-avatar">
+                <i class="fas fa-arrow-right-to-bracket" style="font-size: 20px;"></i>
+                <span class="username">Signin</span> 
+              </div>
+            </a>
+          <% } else { %>
+            <a href="/listings" class="nav-link me-1">
+              <div class="user-avatar">
+                <i class="fas fa-circle-user" style="font-size: 20px;"></i>
+                <span class="username"><%= currentUser.username %></span> 
+              </div>
+            </a>
+            <a class="nav-link" href="/logout">
+              <div class="user-avatar">
+                <i class="fa fa-right-from-bracket" style="font-size: 20px;"></i>
+                <span class="username">Logout</span> 
+              </div>
+            </a>
+          <% } %>
+        </div>
+        <!-- Moved theme toggle here for better positioning in offcanvas/mobile -->
+        <div class="form-check form-switch nav-link ms-5 mt-2">
+          <input class="form-check-input" type="checkbox" id="theme-toggle" onchange="toggleTheme()">
+          <label class="form-check-label" for="theme-toggle" style="color: var(--text-color);">Dark Mode</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
