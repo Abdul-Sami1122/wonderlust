@@ -22,29 +22,37 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-// Creating connection to data base
+// Creating connection to database with better error handling
 const dbUrl = process.env.ATLASDB_URL;
 
-async function main() {
-  await mongoose.connect(dbUrl);
+// Check if database URL exists
+if (!dbUrl) {
+  console.error("ATLASDB_URL environment variable is missing!");
+  // Don't crash the app, but log the error
 }
 
-// Calling a main function of Data Base
-main()
-  .then(() => {
-    console.log("Connection established");
-  })
-  .catch((err) => {
-    console.log("Connection Failed", err);
-  });
+async function main() {
+  try {
+    if (dbUrl) {
+      await mongoose.connect(dbUrl);
+      console.log("MongoDB connection established");
+    } else {
+      console.log("No MongoDB URL provided, running without database");
+    }
+  } catch (err) {
+    console.error("MongoDB connection failed:", err.message);
+    // Don't throw error, allow app to start without DB
+  }
+}
+
+// Initialize database connection
+main();
 
 // Set and Use variables
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
-// Set value to override requests
 app.use(methodOverride("_method"));
-// Middleware to parse JSON bodies
 app.use(express.json());
 
 // Defining the engine for EJS Mate.
@@ -52,26 +60,28 @@ app.engine("ejs", ejsMate);
 // Defining path for the static files
 app.use(express.static(path.join(__dirname, "/public")));
 
-// Mongo Session Store
-const store = MongoStore.create({
-  mongoUrl: dbUrl,
-  crypto: {
-    secret: process.env.SECRET
-  },
-  touchAfter: 24 * 3600,
-});
+// Mongo Session Store - Only if DB URL exists
+let store;
+if (dbUrl) {
+  store = MongoStore.create({
+    mongoUrl: dbUrl,
+    crypto: {
+      secret: process.env.SECRET || "fallback-secret-for-development"
+    },
+    touchAfter: 24 * 3600,
+  });
 
-// Error Handling for session store
-store.on("error", (err) => {
-  console.log("Error in Mongo Session Store:", err);
-});
+  store.on("error", (err) => {
+    console.log("Error in Mongo Session Store:", err);
+  });
+}
 
-// Defining Sessions option
+// Defining Sessions option with fallback
 const sessionOptions = {
-  store,
-  secret: process.env.SECRET,
+  store: store || undefined, // Use memory store if no MongoDB
+  secret: process.env.SECRET || "fallback-secret-key",
   resave: false,
-  saveUninitialized: true, // Fixed typo: saveunintialized -> saveUninitialized
+  saveUninitialized: true,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -81,19 +91,13 @@ const sessionOptions = {
 
 // Using sessions
 app.use(session(sessionOptions));
-
-// Using flash
 app.use(flash());
 
 // Defining a passport middlewares
 app.use(passport.initialize());
-// To define a user in a single session
 app.use(passport.session());
-// used to authenticate every request and user
 passport.use(new LocalStrategy(User.authenticate()));
-// User related info storing in a session is called serialization
 passport.serializeUser(User.serializeUser());
-// removing user info from session after closing session is called deserialization
 passport.deserializeUser(User.deserializeUser());
 
 // Defining middleware for flash
@@ -102,6 +106,15 @@ app.use((req, res, next) => {
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.user;
   next();
+});
+
+// Basic health check route
+app.get("/health", (req, res) => {
+  res.json({ 
+    status: "OK", 
+    database: dbUrl ? "Configured" : "Not configured",
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Using Routes which we import
@@ -114,28 +127,21 @@ app.get("/privacy", (req, res, next) => {
   res.render("Privacy");
 });
 
-// Root route - ADD THIS
+// Root route
 app.get("/", (req, res) => {
-  res.render("listings/index"); // or whatever your home page is
+  res.render("listings/index");
 });
 
-// Custom Error Handling middleware for Backend - FIXED ROUTE PATTERN
-app.all("/*", (req, res, next) => { // Fixed: "/{*splat}" -> "*"
+// Correct 404 handler
+app.all("/*", (req, res, next) => {
   next(new ExpressError(404, "Page not found!"));
 });
 
+// Error handling middleware
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something Went Wrong" } = err;
   res.status(statusCode).render("Error.ejs", { err });
 });
 
-// VERCEL FIX: Export the app instead of listening
+// Export for Vercel
 module.exports = app;
-
-// Only listen locally in development
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 8080;
-  app.listen(PORT, () => {
-    console.log(`Server runs at port number ${PORT}.`);
-  });
-}
