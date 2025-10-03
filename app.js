@@ -120,7 +120,7 @@ app.get("/", (req, res) => {
 });
 
 // Custom Error Handling middleware for Backend - FIXED ROUTE PATTERN
-app.all("*", (req, res, next) => { // Fixed: "/{*splat}" -> "*"
+app.all("/*", (req, res, next) => { // Fixed: "/{*splat}" -> "*"
   next(new ExpressError(404, "Page not found!"));
 });
 
