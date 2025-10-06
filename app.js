@@ -1,8 +1,7 @@
-// Check if project is in development phase then use dotenv and if it deployed than use NODE_ENV variable
-if (process.env.NODE_ENV !== "production") {
+// Check if project is is devolpment phase then use dotenv and if it deployed than use NODE_ENV variable
+if (!process.env.NODE_ENV != "production") {
   require("dotenv").config();
-}
-
+};
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -22,82 +21,77 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-// Creating connection to database with better error handling
+// Creating connection to data base
+
 const dbUrl = process.env.ATLASDB_URL;
-
-// Check if database URL exists
-if (!dbUrl) {
-  console.error("ATLASDB_URL environment variable is missing!");
-  // Don't crash the app, but log the error
-}
-
 async function main() {
-  try {
-    if (dbUrl) {
-      await mongoose.connect(dbUrl);
-      console.log("MongoDB connection established");
-    } else {
-      console.log("No MongoDB URL provided, running without database");
-    }
-  } catch (err) {
-    console.error("MongoDB connection failed:", err.message);
-    // Don't throw error, allow app to start without DB
-  }
+  await mongoose.connect(dbUrl);
 }
+// Calling a main function of Data Base
 
-// Initialize database connection
-main();
-
+main()
+  .then(() => {
+    console.log("Connection established");
+  })
+  .catch(() => {
+    console.log("Connection Failed");
+  });
 // Set and Use variables
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
+// Set value to override requests
 app.use(methodOverride("_method"));
+// Middleware to parse JSON bodies
 app.use(express.json());
 
 // Defining the engine for EJS Mate.
 app.engine("ejs", ejsMate);
-// Defining path for the static files
+// Defining ath for the static files
 app.use(express.static(path.join(__dirname, "/public")));
+// Mongo Session Store
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  crypto: {
+    secret: process.env.SECRET
+  },
+  touchAfter: 24*3600,
+});
+// Error Handling for session store
+store.on("error",()=>{
+  console.log("Error in MOngo Session Store:", err);
+});
 
-// Mongo Session Store - Only if DB URL exists
-let store;
-if (dbUrl) {
-  store = MongoStore.create({
-    mongoUrl: dbUrl,
-    crypto: {
-      secret: process.env.SECRET || "fallback-secret-for-development"
-    },
-    touchAfter: 24 * 3600,
-  });
-
-  store.on("error", (err) => {
-    console.log("Error in Mongo Session Store:", err);
-  });
-}
-
-// Defining Sessions option with fallback
+// Defining Sessions option
 const sessionOptions = {
-  store: store || undefined, // Use memory store if no MongoDB
-  secret: process.env.SECRET || "fallback-secret-key",
+  store,
+  secret: process.env.SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveunintialized: true,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-  },
+   },
 };
+
 
 // Using sessions
 app.use(session(sessionOptions));
+
+// Using flash
 app.use(flash());
 
 // Defining a passport middlewares
 app.use(passport.initialize());
+// To define a user in a single session
 app.use(passport.session());
+// used to authenticate every request and user
 passport.use(new LocalStrategy(User.authenticate()));
+// User related info storing in a session is called serialization
 passport.serializeUser(User.serializeUser());
+// removing user info from sesson after closing session is called deserialization
 passport.deserializeUser(User.deserializeUser());
 
 // Defining middleware for flash
@@ -108,40 +102,42 @@ app.use((req, res, next) => {
   next();
 });
 
-// Basic health check route
-app.get("/health", (req, res) => {
-  res.json({ 
-    status: "OK", 
-    database: dbUrl ? "Configured" : "Not configured",
-    timestamp: new Date().toISOString()
-  });
-});
+// Demo user
+
+// app.get("/demoUser",async(req,res)=>{
+//     let fakeUser = new User({
+//         email: "student@gmail.com",
+//         username: "Abdul-Sami"
+//     });
+
+//     let newRegister = await User.register(fakeUser, "helloworld");
+//     res.send(newRegister);
+// });
+
 
 // Using Routes which we import
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
+
 // Privacy and Terms
-app.get("/privacy", (req, res, next) => {
-  res.render("Privacy");
+app.get("/privacy",async(req,res,next)=>{
+    res.render("Privacy");
 });
 
-// Root route
-app.get("/", (req, res) => {
-  res.render("listings/index");
-});
+// Custom Error Handling middleware for Backend
 
-// Correct 404 handler
-app.all("/*", (req, res, next) => {
+app.all("/{*splat}", (req, res, next) => {
   next(new ExpressError(404, "Page not found!"));
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something Went Wrong" } = err;
   res.status(statusCode).render("Error.ejs", { err });
 });
 
-// Export for Vercel
-module.exports = app;
+// Defining Port number
+app.listen(8080, () => {
+  console.log("Server runs at port number 8080.");
+});

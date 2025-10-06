@@ -2,28 +2,47 @@ const mongoose = require("mongoose");
 const initData = require("./data");
 const listing = require("../Models/listing");
 
+// Atlas connection string (keep credentials secure—use env vars in prod!)
+const dbUrl = process.env;
 
-// Creating connection to data base
-const MONGO_URL = "mongodb://127.0.0.1:27017/wonderLust";
-async function main(){
-    await mongoose.connect(MONGO_URL);
-};
-// Calling a main function of Data Base
+async function main() {
+  await mongoose.connect(dbUrl);
+  console.log("Connection established");
+}
 
-main().then(()=>{
-    console.log("Connection established");
-})
-.catch(()=>{
-    console.log("Connection Failed");
-});
-
-
-const intializeDB = async ()=>{
+const initializeDB = async () => {
+  try {
+    // Clear existing data
     await listing.deleteMany({});
-    initData.data = initData.data.map((obj)=>({...obj, owner: "68d6a09f3ecb074082a91c13"}));
-    await listing.insertMany(initData.data);
-    console.log("data was intialized");
+    console.log("Cleared existing listings");
+
+    // Prepare data with owner ID
+    const seededData = initData.data.map((obj) => ({
+      ...obj,
+      owner: "68de8b34379932e2528531aa" // Ensure this ObjectId exists in your users collection if referenced
+    }));
+
+    // Insert seeded data
+    const result = await listing.insertMany(seededData);
+    console.log(`Initialized ${result.length} listings successfully`);
+  } catch (error) {
+    console.error("Error initializing data:", error.message);
+    throw error;  // Re-throw to bubble up if needed
+  }
 };
 
-intializeDB();
-
+// Main execution flow
+main()
+  .then(async () => {
+    // Only run seeding AFTER connection is confirmed
+    await initializeDB();
+  })
+  .catch((error) => {
+    console.error("Connection failed:", error.message);
+  })
+  .finally(async () => {
+    // Close connection and exit
+    await mongoose.connection.close();
+    console.log("Connection closed");
+    process.exit(0);
+  });

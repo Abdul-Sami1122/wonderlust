@@ -183,6 +183,7 @@ module.exports.search = async (req, res) => {
   // If nothing found → show related (latest listings for example)
   if (allListings.length === 0) {
     allListings = await listing.find().sort({ createdAt: -1 }).limit(10);
+    req.flash("error","Listing you searched is not found!");
   };
   res.render("listings/index.ejs", { allListings });
 };
