@@ -1,7 +1,7 @@
 // Check if project is is devolpment phase then use dotenv and if it deployed than use NODE_ENV variable
 if (!process.env.NODE_ENV != "production") {
   require("dotenv").config();
-};
+}
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -10,7 +10,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const session = require("express-session");
-const MongoStore = require('connect-mongo');
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -54,12 +54,12 @@ app.use(express.static(path.join(__dirname, "/public")));
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   crypto: {
-    secret: process.env.SECRET
+    secret: process.env.SECRET,
   },
-  touchAfter: 24*3600,
+  touchAfter: 24 * 3600,
 });
 // Error Handling for session store
-store.on("error",()=>{
+store.on("error", () => {
   console.log("Error in MOngo Session Store:", err);
 });
 
@@ -73,9 +73,8 @@ const sessionOptions = {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-   },
+  },
 };
-
 
 // Using sessions
 app.use(session(sessionOptions));
@@ -102,28 +101,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// Demo user
-
-// app.get("/demoUser",async(req,res)=>{
-//     let fakeUser = new User({
-//         email: "student@gmail.com",
-//         username: "Abdul-Sami"
-//     });
-
-//     let newRegister = await User.register(fakeUser, "helloworld");
-//     res.send(newRegister);
-// });
-
-
 // Using Routes which we import
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
-
 // Privacy and Terms
-app.get("/privacy",async(req,res,next)=>{
-    res.render("Privacy");
+app.get("/privacy", async (req, res, next) => {
+  res.render("Privacy");
 });
 
 // Custom Error Handling middleware for Backend
