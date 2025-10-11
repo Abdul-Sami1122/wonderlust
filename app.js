@@ -92,6 +92,43 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 // removing user info from sesson after closing session is called deserialization
 passport.deserializeUser(User.deserializeUser());
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+// Google Authorization
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "/auth/google/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Check if user already exists by googleId
+        let existingUser = await User.findOne({ googleId: profile.id });
+        if (existingUser) return done(null, existingUser);
+
+        // Generate a unique username by adding last 5 chars of Google ID
+        const uniqueUsername = `${profile.displayName.replace(
+          /\s+/g,
+          "_"
+        )}_${profile.id.slice(-5)}`;
+
+        // Create new user
+        const newUser = new User({
+          username: uniqueUsername,
+          googleId: profile.id,
+          email: profile.emails?.[0]?.value || "NoEmail",
+        });
+
+        await newUser.save();
+        return done(null, newUser);
+      } catch (err) {
+        console.error("Error creating Google user:", err);
+        return done(err, null);
+      }
+    }
+  )
+);
 
 // Defining middleware for flash
 app.use((req, res, next) => {
@@ -100,6 +137,9 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+// Google route login
+const authRouter = require("./routes/auth.js");
+app.use("/", authRouter);
 
 // Using Routes which we import
 app.use("/listings", listingRouter);
