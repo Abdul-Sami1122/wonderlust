@@ -1,25 +1,47 @@
 <% layout("/layouts/boilerplate") %>
-<h1 class="col-lg-6 col-md-8 offset-3 mt-3 mb-3">Login on Wonder Lust</h1>
+<h1
+  class="col-lg-6 col-md-8 col-sm-10 offset-lg-3 offset-md-2 offset-sm-1 mt-4 mb-2 text-lg-center text-md-start"
+>
+  Login on Wonder Lust
+</h1>
 
 <div class="row">
-    <div class="col-6 offset-3">
-        <form action="/login" method="POST" class="needs-validation" novalidate>
-            <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
-                  <input type="text" name="username" id="username" class="form-control" placeholder="Enter a username" required>
-                  <div class="valid-feedback">
-                         username is registered
-                  </div>
-                  <div class="invalid-feedback">
-                        username is ot registered
-                  </div>
-            </div>
-            <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password here" required>
-            </div>
-            <button class="btn btn-success">Login</button>
-        </form>
-    </div>
-</div>
+  <div
+    class="col-lg-6 col-md-8 col-sm-10 offset-lg-3 offset-md-2 offset-sm-1 mb-5"
+  >
+    <form
+      action="/login"
+      method="POST"
+      class="needs-validation p-3 p-md-4 p-lg-5"
+      novalidate
+    >
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          class="form-control"
+          placeholder="Enter a username"
+          required
+        />
+        <div class="valid-feedback">username is registered</div>
+        <div class="invalid-feedback">username is not registered</div>
+      </div>
 
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          class="form-control"
+          placeholder="Enter your password here"
+          required
+        />
+      </div>
+
+      <button class="btn btn-success w-100 mt-3">Login</button>
+    </form>
+  </div>
+</div>
