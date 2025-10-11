@@ -623,3 +623,7 @@ footer {
 [data-theme="dark"] .navbar .form-control[type="search"]:focus {
     background-color: var(--surface-color) !important;
 }
+/* Review Button  */
+[data-theme="dark"] .darking {
+  color: black !important;
+}
