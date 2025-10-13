@@ -93,12 +93,49 @@ body {
     color: var(--accent-color) !important;
 }
 
-/* User logo css */
-.user-avatar {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    position: relative;
+/* Avatar wrapper — centers everything neatly */
+.user-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+}
+
+/* Subtle hover for a better UI feel */
+.user-avatar-wrapper:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* User image avatar */
+.avatar-img {
+  width: 32px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  background-color: #ffffff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Initials avatar (no image case) */
+.avatar-initials {
+  width: 32px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #f2242d; /* fixed red color */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Theming for Bootstrap Cards and Listings */

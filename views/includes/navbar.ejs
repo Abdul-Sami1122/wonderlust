@@ -58,6 +58,7 @@
           <a class="nav-link" href="/listings/newlisting">Add New Listing</a>
           <hr />
           <% if (!currentUser) { %>
+          <!-- Not logged in -->
           <a class="nav-link" href="/signup">
             <div class="user-avatar">
               <i class="fa-solid fa-user-plus" style="font-size: 20px"></i>
@@ -75,13 +76,34 @@
             </div>
           </a>
           <br />
+
           <% } else { %>
-          <a href="/listings" class="nav-link me-1">
-            <div class="user-avatar">
-              <i class="fas fa-circle-user" style="font-size: 20px"></i>
-              <span class="username"><%= currentUser.username %></span>
+          <!-- Logged in user -->
+          <div class="user-avatar-wrapper">
+            <% if (currentUser.profileImage) { %>
+            <!-- Google login user -->
+            <img
+              src="<%= currentUser.profileImage %>"
+              alt="User"
+              class="avatar-img"
+            />
+            <% } else { %>
+            <!-- Manual login user -->
+            <div
+              class="avatar-initials"
+              style="
+                background-color: <%= currentUser.color || '#'+ (
+                    (1<<24) * Math.random() |0
+                  ) .toString(16) %>;
+              "
+            >
+              <%= currentUser.username .split(' ') .map(name =>
+              name.charAt(0).toUpperCase()) .slice(0, 2) .join('') %>
             </div>
-          </a>
+            <% } %>
+            <span class="username ms-2"><%= currentUser.username %></span>
+          </div>
+
           <br />
           <a class="nav-link" href="/logout">
             <div class="user-avatar">

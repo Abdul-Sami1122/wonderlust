@@ -10,6 +10,9 @@ const userSchema = new Schema({
   googleId: {
     type: String,
   },
+  profileImage: {
+    type: String,
+  },
 });
 
 userSchema.plugin(passportLocalMongoose);

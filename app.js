@@ -121,6 +121,7 @@ passport.use(
           username: uniqueUsername,
           googleId: profile.id,
           email: profile.emails?.[0]?.value || "NoEmail",
+          profileImage: profile.photos[0].value,
         });
 
         await newUser.save();
