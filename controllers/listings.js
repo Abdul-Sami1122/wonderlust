@@ -204,10 +204,13 @@ module.exports.search = async (req, res) => {
   const keyword = req.query.keyword;
   let allListings = await listing
     .find({
-      title: { $regex: keyword, $options: "i" },
+      $or: [
+        { title: { $regex: keyword, $options: "i" } },
+        { location: { $regex: keyword, $options: "i" } },
+        { country: { $regex: keyword, $options: "i" } },
+      ],
     })
     .sort({ createdAt: -1 });
-  // If nothing found → show related (latest listings for example)
   if (allListings.length === 0) {
     allListings = await listing.find().sort({ createdAt: -1 }).limit(10);
   }
