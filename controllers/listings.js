@@ -199,9 +199,37 @@ module.exports.arctic = async (req, res) => {
   res.render("listings/index.ejs", { allListings });
 };
 
-// Search Routes
+// // Search Routes
+// module.exports.search = async (req, res) => {
+//   const keyword = req.query.keyword;
+//   let allListings = await listing
+//     .find({
+//       $or: [
+//         { title: { $regex: keyword, $options: "i" } },
+//         { location: { $regex: keyword, $options: "i" } },
+//         { country: { $regex: keyword, $options: "i" } },
+//       ],
+//     })
+//     .sort({ createdAt: -1 });
+//   // if (allListings.length === 0) {
+//   //   allListings = await listing.find().sort({ createdAt: -1 }).limit(10);
+//   // }
+
+//   if (allListings.length === 0) {
+//     req.flash(
+//       "error",
+//       `No listings found for "${keyword}". Showing most recent listings instead.`
+//     );
+//     allListings = await listing.find().sort({ createdAt: -1 }).limit(10);
+//   }
+//   res.render("listings/index.ejs", { allListings });
+// };
+
+// Updated version
 module.exports.search = async (req, res) => {
-  const keyword = req.query.keyword;
+  const keyword = req.query.keyword?.trim() || "";
+  let message = null;
+
   let allListings = await listing
     .find({
       $or: [
@@ -211,8 +239,11 @@ module.exports.search = async (req, res) => {
       ],
     })
     .sort({ createdAt: -1 });
+
   if (allListings.length === 0) {
+    message = `No listings found for "${keyword}". Showing most recent listings instead.`;
     allListings = await listing.find().sort({ createdAt: -1 }).limit(10);
   }
-  res.render("listings/index.ejs", { allListings });
+
+  res.render("listings/index.ejs", { allListings, message });
 };

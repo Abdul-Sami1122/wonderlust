@@ -1,4 +1,17 @@
 <% layout("/layouts/boilerplate") %>
+<% if (typeof message !== 'undefined' && message) { %>
+  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <%= message %>
+    <button
+      type="button"
+      class="btn-close btn-close-black"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+<% } %>
+
+
 <!-- Filters on page -->
  <div id="filters" class="d-flex flex-nowrap overflow-auto p-2">
     <a href="/listings/trending">

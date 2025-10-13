@@ -1,7 +1,8 @@
 // Check if project is is devolpment phase then use dotenv and if it deployed than use NODE_ENV variable
-if (!process.env.NODE_ENV != "production") {
+if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
