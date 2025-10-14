@@ -672,3 +672,72 @@ footer {
   filter: none !important; /* avoids theme inversion */
 }
 
+/* ==========================
+   Price Filter Form Styling
+   ========================== */
+
+.price-filter-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+   padding: 0.4rem 0.8rem; 
+  transition: all 0.3s ease;
+}
+
+
+.price-filter-form .form-control {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  width: 120px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: none;
+}
+
+.price-filter-form .form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.2rem rgba(242, 36, 45, 0.25);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.price-filter-form .form-control::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+.price-filter-form .btn {
+  background-color: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.45rem 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.price-filter-form .btn:hover {
+  background-color: #d81b22;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .price-filter-form {
+    /* width: 100%; */
+    justify-content: center;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .price-filter-form .form-control {
+    width: 100px;
+  }
+}

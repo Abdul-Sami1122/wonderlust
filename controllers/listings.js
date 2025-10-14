@@ -247,3 +247,20 @@ module.exports.search = async (req, res) => {
 
   res.render("listings/index.ejs", { allListings, message });
 };
+
+// Price range settings
+module.exports.range = async (req, res) => {
+  const { min, max } = req.query;
+  let filter = {};
+
+  if (min && max) {
+    filter.price = { $gte: min, $lte: max };
+  } else if (min) {
+    filter.price = { $gte: min };
+  } else if (max) {
+    filter.price = { $lte: max };
+  }
+
+  const allListings = await listing.find(filter);
+  res.render("listings/index", { allListings });
+};

@@ -88,14 +88,43 @@
     </a>
 </div>
 <!-- Taxes Switch settings -->
-<div class="tx-toggle">
-        <div class="form-check-reverse form-switch">
-             <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-             <label class="form-check-label" for="switchCheckDefault">Display total after Taxes</label>
-         </div>
+<!-- Taxes Switch + Price Range -->
+<div class="d-flex justify-content-between align-items-center flex-wrap mt-2">
+  <!-- Tax toggle -->
+  <div class="tx-toggle d-flex align-items-center mb-2 mb-md-0">
+    <div class="form-check-reverse form-switch">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        id="switchCheckDefault"
+      />
+      <label class="form-check-label ms-2" for="switchCheckDefault">
+        Display total after Taxes
+      </label>
+    </div>
+  </div>
+
+  <!-- Price range filter form -->
+  <form action="/listings/range" method="GET" class="price-filter-form">
+    <input
+      type="number"
+      name="min"
+      placeholder="Min Price"
+      class="form-control"
+      style="width: 130px;"
+    />
+    <input
+      type="number"
+      name="max"
+      placeholder="Max Price"
+      class="form-control"
+      style="width: 130px;"
+    />
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
 </div>
-   
-   
+
     <!-- All listings Details -->
      <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
     <% for(let listing of allListings) {%>
