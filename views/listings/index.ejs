@@ -75,25 +75,25 @@
     </a>
 </div>
 
-<!-- Taxes Switch + Filters (City & Price Range) -->
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3 mb-4">
-  <!-- Tax toggle -->
-  <div class="tx-toggle d-flex align-items-center justify-content-between border rounded-3 px-3 py-2 bg-surface shadow-sm">
-    <div class="form-check-reverse form-switch m-0 d-flex align-items-center gap-2">
+<!-- Taxes Switch + Filters (City & Price Range in 1 Single Line on Desktop) -->
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-stretch align-items-lg-center gap-3 my-3">
+  <!-- Tax Toggle Box -->
+  <div class="tax-toggle-box d-flex align-items-center border rounded-3 px-3 py-2 bg-surface shadow-sm" style="min-height: 42px;">
+    <div class="form-check form-switch m-0 d-flex align-items-center gap-2">
       <input
-        class="form-check-input mt-0"
+        class="form-check-input mt-0 cursor-pointer"
         type="checkbox"
         role="switch"
         id="switchCheckDefault"
       />
-      <label class="form-check-label text-nowrap fw-semibold small" for="switchCheckDefault">
+      <label class="form-check-label text-nowrap fw-semibold small cursor-pointer m-0 ms-1" for="switchCheckDefault">
         Display total after Taxes
       </label>
     </div>
   </div>
 
-  <!-- Filter Form (City + Price Range) -->
-  <form action="/listings" method="GET" class="price-filter-form d-flex align-items-center flex-wrap gap-2">
+  <!-- Filter Form (City + Min + Max + Filter + Clear in ONE LINE on Desktop) -->
+  <form action="/listings" method="GET" class="filter-bar-form d-flex align-items-center flex-wrap flex-sm-nowrap gap-2 p-2 border rounded-3 bg-surface shadow-sm">
     <% if (activeCategory) { %>
       <input type="hidden" name="category" value="<%= activeCategory %>" />
     <% } %>
@@ -101,8 +101,8 @@
       <input type="hidden" name="keyword" value="<%= activeKeyword %>" />
     <% } %>
     
-    <!-- City Filter -->
-    <select name="city" class="form-select form-select-sm flex-fill flex-md-grow-0" style="min-width: 120px;">
+    <!-- City Dropdown -->
+    <select name="city" class="form-select form-select-sm filter-input" style="width: 140px; min-width: 125px;">
       <option value="">All Cities</option>
       <% if (typeof distinctCities !== 'undefined' && distinctCities.length) { %>
         <% for (let c of distinctCities) { %>
@@ -111,25 +111,32 @@
       <% } %>
     </select>
 
+    <!-- Min Price -->
     <input
       type="number"
       name="min"
       placeholder="Min Price"
-      class="form-control form-control-sm flex-fill flex-md-grow-0"
-      style="min-width: 90px; max-width: 120px;"
+      class="form-control form-control-sm filter-input"
+      style="width: 105px; min-width: 95px;"
       value="<%= activeMin || '' %>"
     />
+
+    <!-- Max Price -->
     <input
       type="number"
       name="max"
       placeholder="Max Price"
-      class="form-control form-control-sm flex-fill flex-md-grow-0"
-      style="min-width: 90px; max-width: 120px;"
+      class="form-control form-control-sm filter-input"
+      style="width: 105px; min-width: 95px;"
       value="<%= activeMax || '' %>"
     />
-    <button type="submit" class="btn btn-sm btn-dark px-3">Filter</button>
+
+    <!-- Filter Submit Button -->
+    <button type="submit" class="btn btn-sm btn-dark px-3 text-nowrap">Filter</button>
+    
+    <!-- Clear Button -->
     <% if (activeCategory || activeMin || activeMax || activeKeyword || activeCity) { %>
-      <a href="/listings" class="btn btn-sm btn-outline-secondary">Clear</a>
+      <a href="/listings" class="btn btn-sm btn-outline-secondary text-nowrap">Clear</a>
     <% } %>
   </form>
 </div>
