@@ -1,113 +1,121 @@
 /* Root variables for theming */
 :root {
-    /* Light theme (default) */
-    --bg-color: #ffffff;
-    --surface-color: #f8f9fa;
-    --text-color: #495057;
-    --text-secondary: #222222;
-    --border-color: #e9ecef;
-    --shadow-color: rgba(0,0,0,0.05);
-    --shadow-hover: rgba(0,0,0,0.1);
-    --accent-color: #f2242d;
-    --navbar-bg: white;
-    --footer-bg: #ebebeb;
-    --filter-bg: white;
-    --filter-border: #e9ecef;
-    --filter-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    --filter-hover-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    --overlay-bg: rgba(255,255,255,0.2);
-    --link-color: #222222;
+  /* Light theme (default) */
+  --bg-color: #ffffff;
+  --surface-color: #f8f9fa;
+  --text-color: #495057;
+  --text-secondary: #222222;
+  --border-color: #e9ecef;
+  --shadow-color: rgba(0, 0, 0, 0.05);
+  --shadow-hover: rgba(0, 0, 0, 0.1);
+  --accent-color: #f2242d;
+  --navbar-bg: white;
+  --footer-bg: #ebebeb;
+  --filter-bg: white;
+  --filter-border: #e9ecef;
+  --filter-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --filter-hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --overlay-bg: rgba(255, 255, 255, 0.2);
+  --link-color: #222222;
 }
 
 [data-theme="dark"] {
-    /* Dark theme overrides */
-    --bg-color: #121212;
-    --surface-color: #1e1e1e;
-    --text-color: #e0e0e0;
-    --text-secondary: #e0e0e0;
-    --border-color: #333333;
-    --shadow-color: rgba(0,0,0,0.3);
-    --shadow-hover: rgba(0,0,0,0.5);
-    --accent-color: #f2242d;
-    --navbar-bg: #1e1e1e;
-    --footer-bg: #2a2a2a;
-    --filter-bg: #2a2a2a;
-    --filter-border: #444444;
-    --filter-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    --filter-hover-shadow: 0 4px 8px rgba(0,0,0,0.5);
-    --overlay-bg: rgba(0,0,0,0.5);
-    --link-color: #e0e0e0;
+  /* Dark theme overrides */
+  --bg-color: #121212;
+  --surface-color: #1e1e1e;
+  --text-color: #e0e0e0;
+  --text-secondary: #e0e0e0;
+  --border-color: #333333;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --shadow-hover: rgba(0, 0, 0, 0.5);
+  --accent-color: #f2242d;
+  --navbar-bg: #1e1e1e;
+  --footer-bg: #2a2a2a;
+  --filter-bg: #2a2a2a;
+  --filter-border: #444444;
+  --filter-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --filter-hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --link-color: #e0e0e0;
 }
 
-html, body {
-    max-width: 100vw !important;
-    overflow-x: hidden !important;
-    position: relative;
+html,
+body {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  position: relative;
 }
 
 body {
-    font-family: "Plus Jakarta Sans", sans-serif !important;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.container, .container-fluid {
-    flex: 1;
-    max-width: 100% !important;
+.container,
+.container-fluid {
+  flex: 1;
+  max-width: 100% !important;
 }
 
 /* navbar styling */
 .navbar {
-    /* height: 5rem; */
-    background-color: var(--navbar-bg);
-    border-bottom: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    z-index: 1030; /* Ensure sticky-top works reliably */
+  /* height: 5rem; */
+  background-color: var(--navbar-bg);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  z-index: 1030;
+  /* Ensure sticky-top works reliably */
 }
+
 /* Toggler icon fix for dark mode - simpler invert approach */
 .navbar-toggler {
-    border: none; /* Remove border if it clashes; optional */
-    background-color: rgba(var(--text-color), 0.1); /* Subtle bg for visibility */
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+  border: none;
+  /* Remove border if it clashes; optional */
+  background-color: rgba(var(--text-color), 0.1);
+  /* Subtle bg for visibility */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar-toggler:focus {
-    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25); /* Theme-aware focus ring */
+  box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25);
+  /* Theme-aware focus ring */
 }
 
 .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%236a6e71' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important; /* Bootstrap's default dark lines, forced */
-    transition: filter 0.3s ease;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%236a6e71' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  /* Bootstrap's default dark lines, forced */
+  transition: filter 0.3s ease;
 }
 
 
 .fa-compass {
-    color: var(--accent-color);
+  color: var(--accent-color);
 }
 
 .navbar-brand .fa-compass,
 .navbar-brand .brand-icon {
-    font-size: 1.25rem !important;
+  font-size: 1.25rem !important;
 }
 
 .btn .fa-compass,
 .btn i.fa-compass {
-    font-size: 0.95rem !important;
-    vertical-align: -1px;
+  font-size: 0.95rem !important;
+  vertical-align: -1px;
 }
 
 .nav-link {
-    color: var(--text-secondary) !important;
-    font-size: 16px;
-    transition: color 0.3s ease;
+  color: var(--text-secondary) !important;
+  font-size: 16px;
+  transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-    color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
 }
 
 /* Avatar wrapper — centers everything neatly */
@@ -142,7 +150,8 @@ body {
   width: 32px;
   height: 28px;
   border-radius: 50%;
-  background-color: #f2242d; /* fixed red color */
+  background-color: #f2242d;
+  /* fixed red color */
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -157,276 +166,299 @@ body {
 
 /* Theming for Bootstrap Cards and Listings */
 .listing-card {
-    background-color: var(--bg-color); /* Ensures card background switches */
-    color: var(--text-color); /* Base text color for entire card */
-    border: 1px solid var(--border-color) !important; /* Subtle border for theme */
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  background-color: var(--bg-color);
+  /* Ensures card background switches */
+  color: var(--text-color);
+  /* Base text color for entire card */
+  border: 1px solid var(--border-color) !important;
+  /* Subtle border for theme */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .listing-card .card-body {
-    color: var(--text-color); /* Text in body */
-    transition: color 0.3s ease;
+  color: var(--text-color);
+  /* Text in body */
+  transition: color 0.3s ease;
 }
 
 .listing-card .card-text {
-    color: var(--text-color); /* Specifically for your <p> with title/price */
+  color: var(--text-color);
+  /* Specifically for your <p> with title/price */
 }
 
 .listing-card .card-text b {
-    color: var(--text-secondary); /* Bolder/darker for titles (uses your --text-secondary) */
-    transition: color 0.3s ease;
+  color: var(--text-secondary);
+  /* Bolder/darker for titles (uses your --text-secondary) */
+  transition: color 0.3s ease;
 }
 
 .listing-link {
-    color: inherit; /* Inherit from card to avoid color jumps */
-    text-decoration: none;
-    transition: color 0.3s ease;
+  color: inherit;
+  /* Inherit from card to avoid color jumps */
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .listing-link:hover {
-    color: var(--accent-color); /* Your red #f2242d on hover */
+  color: var(--accent-color);
+  /* Your red #f2242d on hover */
 }
 
 /* Footer */
 footer {
-    margin-top: auto;
+  margin-top: auto;
 }
 
-.f-info-links, 
+.f-info-links,
 .f-info-social,
 .f-info-brand {
-    width: 100%;
-    vertical-align: middle;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .f-info-social i {
-    font-size: 1.2rem;
-    margin-right: 1rem;
-    color: var(--text-color);
-    transition: color 0.3s ease;
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  color: var(--text-color);
+  transition: color 0.3s ease;
 }
-.f-info-social i:hover{
-    color: #f2242d
+
+.f-info-social i:hover {
+  color: #f2242d
 }
 
 .f-info-links a {
-    text-decoration: none;
-    color: var(--link-color);
-    transition: color 0.3s ease;
+  text-decoration: none;
+  color: var(--link-color);
+  transition: color 0.3s ease;
 }
 
 .f-info-links a:hover {
-    text-decoration: underline;
-    color: var(--accent-color);
+  text-decoration: underline;
+  color: var(--accent-color);
 }
 
-.f-info { 
-    text-align: center;
-    height: 8rem;
-    display: flex;
-    background-color: var(--footer-bg);
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: space-evenly;
-    border-top: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+.f-info {
+  text-align: center;
+  height: 8rem;
+  display: flex;
+  background-color: var(--footer-bg);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: space-evenly;
+  border-top: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Filters styling */
 #filters {
-    background-color: var(--surface-color);
-    border-radius: 12px;
-    padding: 10px;
-    margin: 15px 0;
-    overflow-x: auto !important;
-    white-space: nowrap !important;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-    border: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  padding: 10px;
+  margin: 15px 0;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 #filters::-webkit-scrollbar {
-    display: none; /* WebKit (Chrome, Safari) */
+  display: none;
+  /* WebKit (Chrome, Safari) */
 }
 
 .filter {
-    display: inline-flex !important;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: var(--filter-bg);
-    border: 1px solid var(--filter-border);
-    border-radius: 18px;
-    padding: 10px 14px;
-    margin-right: 6px;
-    min-width: 85px;
-    max-width: 120px;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
-    text-align: center;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-    box-shadow: var(--filter-shadow);
-    color: var(--text-color);
+  display: inline-flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--filter-bg);
+  border: 1px solid var(--filter-border);
+  border-radius: 18px;
+  padding: 10px 14px;
+  margin-right: 6px;
+  min-width: 85px;
+  max-width: 120px;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  box-shadow: var(--filter-shadow);
+  color: var(--text-color);
 }
 
 .filter:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--filter-hover-shadow);
-    border-color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: var(--filter-hover-shadow);
+  border-color: var(--accent-color);
 }
 
 .filter div i {
-    font-size: 18px;
-    color: var(--accent-color);
-    margin-bottom: 4px;
+  font-size: 18px;
+  color: var(--accent-color);
+  margin-bottom: 4px;
 }
 
 .filter p {
-    margin: 0;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-color);
-    white-space: nowrap !important;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-color);
+  white-space: nowrap !important;
 }
 
 /* Card Styling */
 .listing-card {
-    border: none !important;
-    margin-bottom: 2rem;
-    background-color: var(--bg-color);
-    transition: background-color 0.3s ease;
-    box-shadow: var(--shadow-color);
+  border: none !important;
+  margin-bottom: 2rem;
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease;
+  box-shadow: var(--shadow-color);
 }
 
 .card-img-top {
-    border-radius: 1rem !important;
-    width: 100% !important;
-    object-fit: cover !important;
-    height: 50vh !important;
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  height: 50vh !important;
 }
 
 .listing-card .card-body {
-    padding: 1rem 1.25rem !important;
+  padding: 1rem 1.25rem !important;
 }
 
 .card-text p {
-    font-weight: 400 !important;
-    color: var(--text-color);
-    transition: color 0.3s ease;
+  font-weight: 400 !important;
+  color: var(--text-color);
+  transition: color 0.3s ease;
 }
 
 .listing-link {
-    text-decoration: none;
-    color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 /* Card Effect */
 .card-images {
-    opacity: 1;
-    background-color: var(--overlay-bg);
-    transition: opacity 0.3s ease;
+  opacity: 1;
+  background-color: var(--overlay-bg);
+  transition: opacity 0.3s ease;
 }
 
 .card-images:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 /* New Page Styling */
 .add-btn {
-    background-color: var(--accent-color) !important;
-    border: none !important;
-    color: white !important;
-    transition: background-color 0.3s ease;
+  background-color: var(--accent-color) !important;
+  border: none !important;
+  color: white !important;
+  transition: background-color 0.3s ease;
 }
 
 .add-btn:hover {
-    background-color: #d81b22 !important; /* Slightly darker red on hover */
+  background-color: #d81b22 !important;
+  /* Slightly darker red on hover */
 }
 
 /* Edit Page */
 .edit-btn {
-    background-color: var(--accent-color) !important;
-    border: none !important;
-    color: white !important;
-    transition: background-color 0.3s ease;
+  background-color: var(--accent-color) !important;
+  border: none !important;
+  color: white !important;
+  transition: background-color 0.3s ease;
 }
 
 .edit-btn:hover {
-    background-color: #d81b22 !important; /* Slightly darker red on hover */
+  background-color: #d81b22 !important;
+  /* Slightly darker red on hover */
 }
 
 /* Show Page */
 .show-img {
-    height: 30vh;
+  height: 30vh;
 }
 
 .btns {
-    display: flex;
+  display: flex;
 }
 
 .show-card {
-    padding-left: 0;
-    padding-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* Map Styling */
 #map {
-    height: 400px;
-    width: 100%;
+  height: 400px;
+  width: 100%;
 }
 
 /* Refined theming for Bootstrap buttons - better contrast for outline and solid */
 .btn-dark {
-    background-color: var(--text-secondary) !important; /* Dark in light, light in dark */
-    color: var(--bg-color) !important; /* Opposite for text */
-    border-color: var(--text-secondary) !important;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  background-color: var(--text-secondary) !important;
+  /* Dark in light, light in dark */
+  color: var(--bg-color) !important;
+  /* Opposite for text */
+  border-color: var(--text-secondary) !important;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .btn-dark:hover {
-    background-color: var(--accent-color) !important; /* Red hover */
-    border-color: var(--accent-color) !important;
-    color: white !important;
+  background-color: var(--accent-color) !important;
+  /* Red hover */
+  border-color: var(--accent-color) !important;
+  color: white !important;
 }
 
 .btn-outline-dark {
-    color: var(--text-secondary) !important; /* Dark text in light, light in dark */
-    border-color: var(--text-secondary) !important;
-    background-color: transparent !important;
-    transition: all 0.3s ease;
+  color: var(--text-secondary) !important;
+  /* Dark text in light, light in dark */
+  border-color: var(--text-secondary) !important;
+  background-color: transparent !important;
+  transition: all 0.3s ease;
 }
 
 .btn-outline-dark:hover {
-    background-color: var(--accent-color) !important; /* Red fill on hover */
-    border-color: var(--accent-color) !important;
-    color: white !important;
+  background-color: var(--accent-color) !important;
+  /* Red fill on hover */
+  border-color: var(--accent-color) !important;
+  color: white !important;
 }
 
 /* Override for your custom .edit-btn to keep it red-solid always */
 .edit-btn {
-    background-color: var(--accent-color) !important;
-    color: white !important;
-    border: none !important;
-    transition: background-color 0.3s ease;
+  background-color: var(--accent-color) !important;
+  color: white !important;
+  border: none !important;
+  transition: background-color 0.3s ease;
 }
 
 .edit-btn:hover {
-    background-color: #d81b22 !important; /* Darker red */
-    color: white !important;
+  background-color: #d81b22 !important;
+  /* Darker red */
+  color: white !important;
 }
 
 /* Drop down in create listing styling */
 .form-select.btn-like {
-  border-radius: 0.375rem; /* Matches btn-secondary */
-  background-color: #6c757d; /* btn-secondary bg */
+  border-radius: 0.375rem;
+  /* Matches btn-secondary */
+  background-color: #6c757d;
+  /* btn-secondary bg */
   color: white;
 }
+
 .form-select.btn-like option {
   background-color: white;
   color: black;
@@ -434,266 +466,277 @@ footer {
 
 
 /* Offcanvas theming for reliability */
-.offcanvas, .theme-aware {
-    background-color: var(--surface-color) !important;
-    color: var(--text-color) !important;
-    border-left: 1px solid var(--border-color) !important;
-    box-shadow: -5px 0 10px var(--shadow-color) !important; /* Subtle left shadow for depth */
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+.offcanvas,
+.theme-aware {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border-left: 1px solid var(--border-color) !important;
+  box-shadow: -5px 0 10px var(--shadow-color) !important;
+  /* Subtle left shadow for depth */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .offcanvas-header {
-    border-bottom: 1px solid var(--border-color);
-    background-color: var(--surface-color);
-    color: var(--text-color);
-    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 .offcanvas-title {
-    color: var(--text-secondary) !important;
-    transition: color 0.3s ease;
+  color: var(--text-secondary) !important;
+  transition: color 0.3s ease;
 }
 
 .btn-close {
-    filter: invert(0); /* White X in light mode */
-    transition: filter 0.3s ease;
+  filter: invert(0);
+  /* White X in light mode */
+  transition: filter 0.3s ease;
 }
 
 [data-theme="dark"] .btn-close {
-    filter: invert(1); /* Dark X in dark mode */
+  filter: invert(1);
+  /* Dark X in dark mode */
 }
 
 .offcanvas-body {
-    background-color: var(--surface-color);
-    color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .offcanvas-body .nav-link {
-    color: var(--text-secondary) !important;
-    transition: color 0.3s ease;
+  color: var(--text-secondary) !important;
+  transition: color 0.3s ease;
 }
 
 .offcanvas-body .nav-link:hover {
-    color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
 }
 
 /* User avatar icons - remove hard-coded colors, use vars */
 .user-avatar i {
-    color: var(--accent-color) !important;
-    font-size: 20px;
-    transition: color 0.3s ease;
+  color: var(--accent-color) !important;
+  font-size: 20px;
+  transition: color 0.3s ease;
 }
 
 .user-avatar .username {
-    color: var(--text-secondary);
-    transition: color 0.3s ease;
-    font-size: 14px; /* Consistent sizing */
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+  font-size: 14px;
+  /* Consistent sizing */
 }
 
 /* Theme toggle enhancements */
 #theme-toggle {
-    background-color: var(--border-color);
-    border: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+  background-color: var(--border-color);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 #theme-toggle:checked {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
 .form-check-label {
-    color: var(--text-color) !important;
-    transition: color 0.3s ease;
+  color: var(--text-color) !important;
+  transition: color 0.3s ease;
 }
 
 /* Ensure form-select in offcanvas adapts */
 .offcanvas .form-select.btn-like {
-    background-color: var(--text-secondary);
-    color: var(--bg-color);
-    border-color: var(--border-color);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  background-color: var(--text-secondary);
+  color: var(--bg-color);
+  border-color: var(--border-color);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .offcanvas .form-select.btn-like option {
-    background-color: var(--bg-color);
-    color: var(--text-secondary);
+  background-color: var(--bg-color);
+  color: var(--text-secondary);
 }
 
 
 /* Settings for Tax switch */
-.tax-info{
-        display: none ;
-    }
-    .tx-toggle {
-    display: inline-flex;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin-top: 0.1rem;
-    padding: 0.4rem;
-    background-color: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: 1rem;
-    transition: all 0.3s ease;
+.tax-info {
+  display: none;
+}
+
+.tx-toggle {
+  display: inline-flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 0.1rem;
+  padding: 0.4rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
 }
 
 .tx-toggle .form-check-reverse.form-switch {
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    margin-bottom: 0;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  margin-bottom: 0;
+  width: 100%;
 }
 
 .tx-toggle .form-check-input {
-    position: relative;
-    flex-shrink: 0;
-    width: 3.5rem !important;
-    height: 2rem !important;
-    margin: 0;
-    background-color: var(--border-color) !important;
-    border: 0 !important;
-    border-radius: 2rem !important;
-    transition: background-color 0.3s ease !important;
+  position: relative;
+  flex-shrink: 0;
+  width: 3.5rem !important;
+  height: 2rem !important;
+  margin: 0;
+  background-color: var(--border-color) !important;
+  border: 0 !important;
+  border-radius: 2rem !important;
+  transition: background-color 0.3s ease !important;
 }
 
 .tx-toggle .form-check-input::before {
-    content: '';
-    position: absolute;
-    top: 0.125rem;
-    left: 0.125rem;
-    width: 1.75rem;
-    height: 1.75rem;
-    background-color: var(--bg-color) !important;
-    border-radius: 50% !important;
-    transition: transform 0.3s ease !important;
-    box-shadow: 0 0 0 0.125rem var(--border-color) !important;
+  content: '';
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  background-color: var(--bg-color) !important;
+  border-radius: 50% !important;
+  transition: transform 0.3s ease !important;
+  box-shadow: 0 0 0 0.125rem var(--border-color) !important;
 }
 
 .tx-toggle .form-check-input:checked {
-    background-color: var(--accent-color) !important;
+  background-color: var(--accent-color) !important;
 }
 
 .tx-toggle .form-check-input:checked::before {
-    transform: translateX(1.5rem) !important;
-    background-color: white !important;
-    box-shadow: 0 0 0 0.125rem var(--accent-color) !important;
+  transform: translateX(1.5rem) !important;
+  background-color: white !important;
+  box-shadow: 0 0 0 0.125rem var(--accent-color) !important;
 }
 
 .tx-toggle .form-check-input:focus {
-    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25) !important;
+  box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25) !important;
 }
 
 .tx-toggle .form-check-input:focus-visible {
-    outline: 0;
+  outline: 0;
 }
 
 .tx-toggle .form-check-label {
-    font-weight: 500;
-    color: var(--text-color) !important;
-    margin-bottom: 0;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    white-space: nowrap;
-    flex: 1;
-    text-align: right;
+  font-weight: 500;
+  color: var(--text-color) !important;
+  margin-bottom: 0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  flex: 1;
+  text-align: right;
 }
 
 .tx-toggle:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 2px 4px var(--shadow-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 /* Dark mode adjustments if needed */
 [data-theme="dark"] .tx-toggle .form-check-input::before {
-    background-color: var(--surface-color) !important;
-    box-shadow: 0 0 0 0.125rem var(--border-color) !important;
+  background-color: var(--surface-color) !important;
+  box-shadow: 0 0 0 0.125rem var(--border-color) !important;
 }
 
 [data-theme="dark"] .tx-toggle .form-check-input:checked::before {
-    background-color: var(--surface-color) !important;
-    box-shadow: 0 0 0 0.125rem var(--accent-color) !important;
+  background-color: var(--surface-color) !important;
+  box-shadow: 0 0 0 0.125rem var(--accent-color) !important;
 }
 
 /* Styling of search Bar */
 /* Search form theming in navbar */
 .navbar .d-flex[role="search"] {
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
 }
 
 .navbar .form-control[type="search"] {
-    background-color: var(--surface-color) !important;
-    border: 1px solid var(--border-color) !important;
-    color: var(--text-color) !important;
-    border-radius: 0.95rem !important;
-    padding: 0.4rem 0.6rem !important;
-    transition: all 0.3s ease !important;
-    box-shadow: none !important;
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color) !important;
+  border-radius: 0.95rem !important;
+  padding: 0.4rem 0.6rem !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
 }
 
 .navbar .form-control[type="search"]::placeholder {
-    color: var(--text-secondary) !important;
-    opacity: 0.9;
+  color: var(--text-secondary) !important;
+  opacity: 0.9;
 }
 
 .navbar .form-control[type="search"]:focus {
-    border-color: var(--accent-color) !important;
-    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25) !important;
-    background-color: var(--bg-color) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25) !important;
+  background-color: var(--bg-color) !important;
 }
 
 .navbar .btn-search {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    background-color: var(--accent-color) !important;
-    border: 1px solid var(--accent-color) !important;
-    color: white !important;
-    border-radius: 0.95rem !important;
-    padding: 0.4rem 0.7rem !important;
-    font-weight: 500;
-    transition: all 0.3s ease !important;
-    white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: var(--accent-color) !important;
+  border: 1px solid var(--accent-color) !important;
+  color: white !important;
+  border-radius: 0.95rem !important;
+  padding: 0.4rem 0.7rem !important;
+  font-weight: 500;
+  transition: all 0.3s ease !important;
+  white-space: nowrap;
 }
 
 .navbar .btn-search i {
-    color: white !important;
-    font-size: 1rem;
+  color: white !important;
+  font-size: 1rem;
 }
 
 .navbar .btn-search:hover {
-    background-color: #d81b22 !important;
-    border-color: #d81b22 !important;
-    color: white !important;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px var(--shadow-color);
+  background-color: #d81b22 !important;
+  border-color: #d81b22 !important;
+  color: white !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .navbar .btn-search:focus {
-    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25) !important;
+  box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25) !important;
 }
+
 /* Dark mode refinements for search */
 [data-theme="dark"] .navbar .form-control[type="search"] {
-    background-color: var(--surface-color) !important;
+  background-color: var(--surface-color) !important;
 }
 
 [data-theme="dark"] .navbar .form-control[type="search"]:focus {
-    background-color: var(--surface-color) !important;
+  background-color: var(--surface-color) !important;
 }
+
 /* Review Button  */
 [data-theme="dark"] .darking {
   color: black !important;
 }
+
 /* Boostrap Button */
 /* Always show a black "×" for close button */
 .btn-close.btn-close-black {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 16 16'%3E%3Cpath d='M.293 1.293a1 1 0 0 1 1.414 0L8 7.586l6.293-6.293a1 1 0 0 1 1.414 1.414L9.414 9l6.293 6.293a1 1 0 0 1-1.414 1.414L8 10.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 9 .293 2.707a1 1 0 0 1 0-1.414z'/%3E%3C/svg%3E");
-  opacity: 1 !important; /* keeps it visible */
-  filter: none !important; /* avoids theme inversion */
+  opacity: 1 !important;
+  /* keeps it visible */
+  filter: none !important;
+  /* avoids theme inversion */
 }
 
 /* ==========================
@@ -707,7 +750,7 @@ footer {
   background-color: var(--surface-color);
   border: 1px solid var(--border-color);
   border-radius: 1rem;
-   padding: 0.4rem 0.8rem; 
+  padding: 0.4rem 0.8rem;
   transition: all 0.3s ease;
 }
 
@@ -1023,11 +1066,13 @@ footer {
 }
 
 [data-theme="dark"] .wishlist-btn i {
-  color: #ffffff !important; /* Crisp high-contrast white heart icon */
+  color: #ffffff !important;
+  /* Crisp high-contrast white heart icon */
 }
 
 [data-theme="dark"] .wishlist-btn i.fa-solid.text-danger {
-  color: #ff385c !important; /* Vibrant Red when saved */
+  color: #ff385c !important;
+  /* Vibrant Red when saved */
 }
 
 [data-theme="dark"] .wishlist-btn:hover {
@@ -1040,7 +1085,8 @@ footer {
 
 /* Reservation Card Dark Theme Text Contrast */
 [data-theme="dark"] .reservation-muted-text {
-  color: #cbd5e1 !important; /* Clearly readable light slate in dark mode */
+  color: #cbd5e1 !important;
+  /* Clearly readable light slate in dark mode */
 }
 
 [data-theme="dark"] .booking-label {
@@ -1080,7 +1126,8 @@ footer {
 }
 
 [data-theme="dark"] .review-textarea::placeholder {
-  color: #9ca3af !important; /* Clear readable silver-gray placeholder */
+  color: #9ca3af !important;
+  /* Clear readable silver-gray placeholder */
   opacity: 0.95 !important;
 }
 
@@ -1362,11 +1409,25 @@ html {
 
 /* Floating Wishlist Button Heartbeat Animation */
 @keyframes heartPulse {
-  0% { transform: scale(1); }
-  25% { transform: scale(1.3); }
-  45% { transform: scale(0.9); }
-  65% { transform: scale(1.15); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.3);
+  }
+
+  45% {
+    transform: scale(0.9);
+  }
+
+  65% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .wishlist-btn:hover i {
@@ -1379,6 +1440,7 @@ html {
     opacity: 0;
     transform: translateY(-25px) scale(0.96);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -1663,10 +1725,25 @@ html {
   color: white !important;
 }
 
-.social-pill.fb:hover { background-color: #1877f2 !important; border-color: #1877f2 !important; }
-.social-pill.li:hover { background-color: #0a66c2 !important; border-color: #0a66c2 !important; }
-.social-pill.wa:hover { background-color: #25d366 !important; border-color: #25d366 !important; }
-.social-pill.ph:hover { background-color: #f2242d !important; border-color: #f2242d !important; }
+.social-pill.fb:hover {
+  background-color: #1877f2 !important;
+  border-color: #1877f2 !important;
+}
+
+.social-pill.li:hover {
+  background-color: #0a66c2 !important;
+  border-color: #0a66c2 !important;
+}
+
+.social-pill.wa:hover {
+  background-color: #25d366 !important;
+  border-color: #25d366 !important;
+}
+
+.social-pill.ph:hover {
+  background-color: #f2242d !important;
+  border-color: #f2242d !important;
+}
 
 .footer-divider {
   border-color: var(--border-color);
@@ -1681,6 +1758,7 @@ html {
    Print Styling - Receipts Only
    ======================================================== */
 @media print {
+
   /* Hide all background elements on page */
   body * {
     visibility: hidden !important;
@@ -1976,6 +2054,7 @@ textarea:focus {
   .pagination {
     gap: 3px !important;
   }
+
   .pagination .page-link {
     padding: 0.45rem 0.75rem !important;
     font-size: 0.82rem !important;
@@ -2109,4 +2188,50 @@ textarea:focus {
 
 [data-theme="dark"] .main-footer .text-secondary {
   color: #b5b5b5 !important;
+}
+
+/* 
+   Dark Theme Badges & Text Contrast Overrides
+    */
+[data-theme="dark"] .text-muted {
+  color: #aaaaaa !important;
+}
+
+[data-theme="dark"] .text-secondary {
+  color: #b0b0b0 !important;
+}
+
+[data-theme="dark"] .cash-on-arrival-badge,
+[data-theme="dark"] .bg-warning-subtle {
+  background-color: #3d3000 !important;
+  color: #ffc107 !important;
+  border-color: #665000 !important;
+}
+
+[data-theme="dark"] .bg-primary-subtle {
+  background-color: #0c2b47 !important;
+  color: #4dabf7 !important;
+  border-color: #184e77 !important;
+}
+
+[data-theme="dark"] .bg-success-subtle {
+  background-color: #0b2e13 !important;
+  color: #37b24d !important;
+  border-color: #145222 !important;
+}
+
+/* Hamburger Toggler Icon Contrast in Dark Mode */
+.navbar-toggler {
+  border: 1px solid var(--border-color) !important;
+  padding: 6px 10px !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="dark"] .fa-bars,
+[data-theme="dark"] .theme-aware-icon {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .navbar-toggler-icon {
+  filter: invert(1) brightness(200%) !important;
 }

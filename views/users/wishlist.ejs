@@ -21,11 +21,11 @@
       </div>
     </div>
   <% } else { %>
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       <% for (let item of wishlist) { %>
         <div class="col">
           <div class="card listing-card shadow-sm border-0 rounded-4 overflow-hidden h-100 position-relative">
-            <a href="/listings/<%= item._id %>" class="text-decoration-none text-dark">
+            <a href="/listings/<%= item._id %>" class="text-decoration-none text-theme">
               <img
                 src="<%= item.image ? item.image.url : '' %>"
                 class="card-img-top card-images"

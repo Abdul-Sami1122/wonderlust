@@ -41,7 +41,7 @@
                     <i class="fa-solid fa-credit-card me-1"></i> Paid Online (Sandbox)
                   </span>
                 <% } else { %>
-                  <span class="badge bg-warning-subtle text-dark border border-warning-subtle px-3 py-2 rounded-pill">
+                  <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2 rounded-pill cash-on-arrival-badge">
                     <i class="fa-solid fa-money-bill-wave me-1"></i> Cash on Arrival
                   </span>
                 <% } %>
@@ -49,7 +49,7 @@
               </div>
               <h5 class="fw-bold mb-2">
                 <% if (b.listing) { %>
-                  <a href="/listings/<%= b.listing._id %>" class="text-dark text-decoration-none"><%= b.listing.title %></a>
+                  <a href="/listings/<%= b.listing._id %>" class="text-theme text-decoration-none"><%= b.listing.title %></a>
                 <% } else { %>
                   <span class="text-muted">Listing Not Available</span>
                 <% } %>
