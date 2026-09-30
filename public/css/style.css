@@ -1,0 +1,1863 @@
+/* Root variables for theming */
+:root {
+    /* Light theme (default) */
+    --bg-color: #ffffff;
+    --surface-color: #f8f9fa;
+    --text-color: #495057;
+    --text-secondary: #222222;
+    --border-color: #e9ecef;
+    --shadow-color: rgba(0,0,0,0.05);
+    --shadow-hover: rgba(0,0,0,0.1);
+    --accent-color: #f2242d;
+    --navbar-bg: white;
+    --footer-bg: #ebebeb;
+    --filter-bg: white;
+    --filter-border: #e9ecef;
+    --filter-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    --filter-hover-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    --overlay-bg: rgba(255,255,255,0.2);
+    --link-color: #222222;
+}
+
+[data-theme="dark"] {
+    /* Dark theme overrides */
+    --bg-color: #121212;
+    --surface-color: #1e1e1e;
+    --text-color: #e0e0e0;
+    --text-secondary: #e0e0e0;
+    --border-color: #333333;
+    --shadow-color: rgba(0,0,0,0.3);
+    --shadow-hover: rgba(0,0,0,0.5);
+    --accent-color: #f2242d;
+    --navbar-bg: #1e1e1e;
+    --footer-bg: #2a2a2a;
+    --filter-bg: #2a2a2a;
+    --filter-border: #444444;
+    --filter-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    --filter-hover-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    --overlay-bg: rgba(0,0,0,0.5);
+    --link-color: #e0e0e0;
+}
+
+body {
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container { /* Fixed typo from .conatiner */
+    flex: 1;
+}
+
+/* navbar styling */
+.navbar {
+    /* height: 5rem; */
+    background-color: var(--navbar-bg);
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    z-index: 1030; /* Ensure sticky-top works reliably */
+}
+/* Toggler icon fix for dark mode - simpler invert approach */
+.navbar-toggler {
+    border: none; /* Remove border if it clashes; optional */
+    background-color: rgba(var(--text-color), 0.1); /* Subtle bg for visibility */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25); /* Theme-aware focus ring */
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%236a6e71' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important; /* Bootstrap's default dark lines, forced */
+    transition: filter 0.3s ease;
+}
+
+
+.fa-compass {
+    color: var(--accent-color);
+}
+
+.navbar-brand .fa-compass,
+.navbar-brand .brand-icon {
+    font-size: 1.25rem !important;
+}
+
+.btn .fa-compass,
+.btn i.fa-compass {
+    font-size: 0.95rem !important;
+    vertical-align: -1px;
+}
+
+.nav-link {
+    color: var(--text-secondary) !important;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--accent-color) !important;
+}
+
+/* Avatar wrapper — centers everything neatly */
+.user-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+}
+
+/* Subtle hover for a better UI feel */
+.user-avatar-wrapper:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* User image avatar */
+.avatar-img {
+  width: 32px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  background-color: #ffffff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Initials avatar (no image case) */
+.avatar-initials {
+  width: 32px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #f2242d; /* fixed red color */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Theming for Bootstrap Cards and Listings */
+.listing-card {
+    background-color: var(--bg-color); /* Ensures card background switches */
+    color: var(--text-color); /* Base text color for entire card */
+    border: 1px solid var(--border-color) !important; /* Subtle border for theme */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.listing-card .card-body {
+    color: var(--text-color); /* Text in body */
+    transition: color 0.3s ease;
+}
+
+.listing-card .card-text {
+    color: var(--text-color); /* Specifically for your <p> with title/price */
+}
+
+.listing-card .card-text b {
+    color: var(--text-secondary); /* Bolder/darker for titles (uses your --text-secondary) */
+    transition: color 0.3s ease;
+}
+
+.listing-link {
+    color: inherit; /* Inherit from card to avoid color jumps */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.listing-link:hover {
+    color: var(--accent-color); /* Your red #f2242d on hover */
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+.f-info-links, 
+.f-info-social,
+.f-info-brand {
+    width: 100%;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.f-info-social i {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+.f-info-social i:hover{
+    color: #f2242d
+}
+
+.f-info-links a {
+    text-decoration: none;
+    color: var(--link-color);
+    transition: color 0.3s ease;
+}
+
+.f-info-links a:hover {
+    text-decoration: underline;
+    color: var(--accent-color);
+}
+
+.f-info { 
+    text-align: center;
+    height: 8rem;
+    display: flex;
+    background-color: var(--footer-bg);
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+    border-top: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Filters styling */
+#filters {
+    background-color: var(--surface-color);
+    border-radius: 10px;
+    padding: 12px;
+    margin: 20px 0;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#filters::-webkit-scrollbar {
+    display: none; /* WebKit (Chrome, Safari) */
+}
+
+.filter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--filter-bg);
+    border: 1px solid var(--filter-border);
+    border-radius: 20px;
+    padding: 12px 16px;
+    margin-right: 8px;
+    min-width: 80px;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    box-shadow: var(--filter-shadow);
+    color: var(--text-color);
+}
+
+.filter:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--filter-hover-shadow);
+    border-color: var(--accent-color);
+}
+
+.filter div i {
+    font-size: 20px;
+    color: var(--accent-color);
+    margin-bottom: 6px;
+}
+
+.filter p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* Card Styling */
+.listing-card {
+    border: none !important;
+    margin-bottom: 2rem;
+    background-color: var(--bg-color);
+    transition: background-color 0.3s ease;
+    box-shadow: var(--shadow-color);
+}
+
+.card-img-top {
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+    height: 50vh !important;
+}
+
+.listing-card .card-body {
+    padding: 1rem 1.25rem !important;
+}
+
+.card-text p {
+    font-weight: 400 !important;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.listing-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Card Effect */
+.card-images {
+    opacity: 1;
+    background-color: var(--overlay-bg);
+    transition: opacity 0.3s ease;
+}
+
+.card-images:hover {
+    opacity: 0.8;
+}
+
+/* New Page Styling */
+.add-btn {
+    background-color: var(--accent-color) !important;
+    border: none !important;
+    color: white !important;
+    transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+    background-color: #d81b22 !important; /* Slightly darker red on hover */
+}
+
+/* Edit Page */
+.edit-btn {
+    background-color: var(--accent-color) !important;
+    border: none !important;
+    color: white !important;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #d81b22 !important; /* Slightly darker red on hover */
+}
+
+/* Show Page */
+.show-img {
+    height: 30vh;
+}
+
+.btns {
+    display: flex;
+}
+
+.show-card {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Map Styling */
+#map {
+    height: 400px;
+    width: 100%;
+}
+
+/* Refined theming for Bootstrap buttons - better contrast for outline and solid */
+.btn-dark {
+    background-color: var(--text-secondary) !important; /* Dark in light, light in dark */
+    color: var(--bg-color) !important; /* Opposite for text */
+    border-color: var(--text-secondary) !important;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-dark:hover {
+    background-color: var(--accent-color) !important; /* Red hover */
+    border-color: var(--accent-color) !important;
+    color: white !important;
+}
+
+.btn-outline-dark {
+    color: var(--text-secondary) !important; /* Dark text in light, light in dark */
+    border-color: var(--text-secondary) !important;
+    background-color: transparent !important;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-dark:hover {
+    background-color: var(--accent-color) !important; /* Red fill on hover */
+    border-color: var(--accent-color) !important;
+    color: white !important;
+}
+
+/* Override for your custom .edit-btn to keep it red-solid always */
+.edit-btn {
+    background-color: var(--accent-color) !important;
+    color: white !important;
+    border: none !important;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #d81b22 !important; /* Darker red */
+    color: white !important;
+}
+
+/* Drop down in create listing styling */
+.form-select.btn-like {
+  border-radius: 0.375rem; /* Matches btn-secondary */
+  background-color: #6c757d; /* btn-secondary bg */
+  color: white;
+}
+.form-select.btn-like option {
+  background-color: white;
+  color: black;
+}
+
+
+/* Offcanvas theming for reliability */
+.offcanvas, .theme-aware {
+    background-color: var(--surface-color) !important;
+    color: var(--text-color) !important;
+    border-left: 1px solid var(--border-color) !important;
+    box-shadow: -5px 0 10px var(--shadow-color) !important; /* Subtle left shadow for depth */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.offcanvas-header {
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.offcanvas-title {
+    color: var(--text-secondary) !important;
+    transition: color 0.3s ease;
+}
+
+.btn-close {
+    filter: invert(0); /* White X in light mode */
+    transition: filter 0.3s ease;
+}
+
+[data-theme="dark"] .btn-close {
+    filter: invert(1); /* Dark X in dark mode */
+}
+
+.offcanvas-body {
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.offcanvas-body .nav-link {
+    color: var(--text-secondary) !important;
+    transition: color 0.3s ease;
+}
+
+.offcanvas-body .nav-link:hover {
+    color: var(--accent-color) !important;
+}
+
+/* User avatar icons - remove hard-coded colors, use vars */
+.user-avatar i {
+    color: var(--accent-color) !important;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+.user-avatar .username {
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+    font-size: 14px; /* Consistent sizing */
+}
+
+/* Theme toggle enhancements */
+#theme-toggle {
+    background-color: var(--border-color);
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#theme-toggle:checked {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.form-check-label {
+    color: var(--text-color) !important;
+    transition: color 0.3s ease;
+}
+
+/* Ensure form-select in offcanvas adapts */
+.offcanvas .form-select.btn-like {
+    background-color: var(--text-secondary);
+    color: var(--bg-color);
+    border-color: var(--border-color);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.offcanvas .form-select.btn-like option {
+    background-color: var(--bg-color);
+    color: var(--text-secondary);
+}
+
+
+/* Settings for Tax switch */
+.tax-info{
+        display: none ;
+    }
+    .tx-toggle {
+    display: inline-flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: 0.1rem;
+    padding: 0.4rem;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+.tx-toggle .form-check-reverse.form-switch {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.tx-toggle .form-check-input {
+    position: relative;
+    flex-shrink: 0;
+    width: 3.5rem !important;
+    height: 2rem !important;
+    margin: 0;
+    background-color: var(--border-color) !important;
+    border: 0 !important;
+    border-radius: 2rem !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.tx-toggle .form-check-input::before {
+    content: '';
+    position: absolute;
+    top: 0.125rem;
+    left: 0.125rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    background-color: var(--bg-color) !important;
+    border-radius: 50% !important;
+    transition: transform 0.3s ease !important;
+    box-shadow: 0 0 0 0.125rem var(--border-color) !important;
+}
+
+.tx-toggle .form-check-input:checked {
+    background-color: var(--accent-color) !important;
+}
+
+.tx-toggle .form-check-input:checked::before {
+    transform: translateX(1.5rem) !important;
+    background-color: white !important;
+    box-shadow: 0 0 0 0.125rem var(--accent-color) !important;
+}
+
+.tx-toggle .form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25) !important;
+}
+
+.tx-toggle .form-check-input:focus-visible {
+    outline: 0;
+}
+
+.tx-toggle .form-check-label {
+    font-weight: 500;
+    color: var(--text-color) !important;
+    margin-bottom: 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    flex: 1;
+    text-align: right;
+}
+
+.tx-toggle:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Dark mode adjustments if needed */
+[data-theme="dark"] .tx-toggle .form-check-input::before {
+    background-color: var(--surface-color) !important;
+    box-shadow: 0 0 0 0.125rem var(--border-color) !important;
+}
+
+[data-theme="dark"] .tx-toggle .form-check-input:checked::before {
+    background-color: var(--surface-color) !important;
+    box-shadow: 0 0 0 0.125rem var(--accent-color) !important;
+}
+
+/* Styling of search Bar */
+/* Search form theming in navbar */
+.navbar .d-flex[role="search"] {
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.navbar .form-control[type="search"] {
+    background-color: var(--surface-color) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+    border-radius: 0.95rem !important;
+    padding: 0.4rem 0.6rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: none !important;
+}
+
+.navbar .form-control[type="search"]::placeholder {
+    color: var(--text-secondary) !important;
+    opacity: 0.9;
+}
+
+.navbar .form-control[type="search"]:focus {
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25) !important;
+    background-color: var(--bg-color) !important;
+}
+
+.navbar .btn-search {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background-color: var(--accent-color) !important;
+    border: 1px solid var(--accent-color) !important;
+    color: white !important;
+    border-radius: 0.95rem !important;
+    padding: 0.4rem 0.7rem !important;
+    font-weight: 500;
+    transition: all 0.3s ease !important;
+    white-space: nowrap;
+}
+
+.navbar .btn-search i {
+    color: white !important;
+    font-size: 1rem;
+}
+
+.navbar .btn-search:hover {
+    background-color: #d81b22 !important;
+    border-color: #d81b22 !important;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.navbar .btn-search:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), 0.25) !important;
+}
+/* Dark mode refinements for search */
+[data-theme="dark"] .navbar .form-control[type="search"] {
+    background-color: var(--surface-color) !important;
+}
+
+[data-theme="dark"] .navbar .form-control[type="search"]:focus {
+    background-color: var(--surface-color) !important;
+}
+/* Review Button  */
+[data-theme="dark"] .darking {
+  color: black !important;
+}
+/* Boostrap Button */
+/* Always show a black "×" for close button */
+.btn-close.btn-close-black {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 16 16'%3E%3Cpath d='M.293 1.293a1 1 0 0 1 1.414 0L8 7.586l6.293-6.293a1 1 0 0 1 1.414 1.414L9.414 9l6.293 6.293a1 1 0 0 1-1.414 1.414L8 10.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 9 .293 2.707a1 1 0 0 1 0-1.414z'/%3E%3C/svg%3E");
+  opacity: 1 !important; /* keeps it visible */
+  filter: none !important; /* avoids theme inversion */
+}
+
+/* ==========================
+   Price Filter Form Styling
+   ========================== */
+
+.price-filter-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+   padding: 0.4rem 0.8rem; 
+  transition: all 0.3s ease;
+}
+
+
+.price-filter-form .form-control {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  width: 120px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: none;
+}
+
+.price-filter-form .form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.2rem rgba(242, 36, 45, 0.25);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.price-filter-form .form-control::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+.price-filter-form .btn {
+  background-color: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.45rem 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.price-filter-form .btn:hover {
+  background-color: #d81b22;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .price-filter-form {
+    /* width: 100%; */
+    justify-content: center;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .price-filter-form .form-control {
+    width: 100px;
+  }
+}
+
+/* ========================================================
+   Theme-aware Booking Widget & Card Styling
+   ======================================================== */
+.booking-widget-card {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color);
+  box-shadow: 0 8px 24px var(--shadow-color) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.booking-widget-card .price-text,
+.booking-widget-card .total-price-text {
+  color: var(--text-secondary) !important;
+}
+
+.booking-date-inputs {
+  background-color: var(--bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.booking-date-inputs label {
+  color: var(--text-color) !important;
+}
+
+.booking-date-inputs .form-control,
+.booking-date-inputs .form-select {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.booking-date-inputs .form-control:focus,
+.booking-date-inputs .form-select:focus {
+  background-color: var(--surface-color);
+  border-color: var(--accent-color);
+  color: var(--text-secondary);
+}
+
+.category-badge {
+  background-color: var(--surface-color) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.wishlist-btn {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.wishlist-btn i {
+  color: #222222;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.wishlist-btn i.fa-solid.text-danger {
+  color: #f2242d !important;
+}
+
+.wishlist-btn:hover {
+  transform: scale(1.12);
+  background: #ffffff !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+.wishlist-btn:hover i {
+  color: #f2242d !important;
+}
+
+/* Review Box Card & Textarea Styling */
+.review-box-card {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color) !important;
+  transition: all 0.3s ease;
+}
+
+.review-textarea {
+  background-color: var(--bg-color);
+  border: 1.5px solid var(--border-color);
+  border-radius: 0.85rem !important;
+  padding: 0.85rem 1.1rem !important;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  height: 130px !important;
+  min-height: 130px !important;
+  max-height: 130px !important;
+  resize: none !important;
+  outline: none !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.review-textarea:focus {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 0.25rem rgba(242, 36, 45, 0.2) !important;
+  background-color: var(--surface-color) !important;
+}
+
+.review-textarea::placeholder {
+  color: #9ca3af;
+  opacity: 0.85;
+}
+
+.review-submit-btn {
+  background: linear-gradient(135deg, #f2242d 0%, #d8141d 100%) !important;
+  border: none !important;
+  border-radius: 0.65rem !important;
+  box-shadow: 0 4px 14px rgba(242, 36, 45, 0.35) !important;
+  transition: all 0.2s ease !important;
+}
+
+.review-submit-btn:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(242, 36, 45, 0.5) !important;
+}
+
+/* Reservation Box Labels and Text */
+.reservation-muted-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.booking-label {
+  color: var(--text-color);
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+
+/* Map Container Styling */
+#map {
+  height: 420px;
+  width: 100%;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0 8px 30px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Leaflet Popup Styling */
+.leaflet-popup-content-wrapper {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border-radius: 0.85rem !important;
+  box-shadow: 0 8px 24px var(--shadow-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.leaflet-popup-tip {
+  background-color: var(--surface-color) !important;
+}
+
+/* Dark Mode Global Overrides for Cards, Inputs, and Modals */
+[data-theme="dark"] .card {
+  background-color: var(--surface-color);
+  border-color: var(--border-color) !important;
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .card-body {
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .border {
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+  background-color: #202025;
+  border-color: #3f3f46;
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+  background-color: #27272f;
+  border-color: var(--accent-color);
+  color: #ffffff;
+}
+
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+[data-theme="dark"] .modal-content {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .alert-secondary {
+  background-color: #242424 !important;
+  border-color: #383838 !important;
+  color: #d1d5db !important;
+}
+
+[data-theme="dark"] .bg-light {
+  background-color: #222222 !important;
+}
+
+[data-theme="dark"] .text-dark {
+  color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] hr {
+  border-color: var(--border-color);
+  opacity: 0.2;
+}
+
+[data-theme="dark"] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+[data-theme="dark"] .btn-light {
+  background-color: #2b2b2b !important;
+  color: #f3f4f6 !important;
+  border-color: #3f3f46 !important;
+}
+
+[data-theme="dark"] .btn-light:hover {
+  background-color: #383838 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .nav-pills .nav-link {
+  color: var(--text-color);
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .nav-pills .nav-link.active {
+  background-color: var(--accent-color) !important;
+  color: #ffffff !important;
+  border-color: var(--accent-color) !important;
+}
+
+/* Dark Mode Specific Overrides for User Issues */
+[data-theme="dark"] .wishlist-btn {
+  background: rgba(30, 30, 36, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="dark"] .wishlist-btn i {
+  color: #ffffff !important; /* Crisp high-contrast white heart icon */
+}
+
+[data-theme="dark"] .wishlist-btn i.fa-solid.text-danger {
+  color: #ff385c !important; /* Vibrant Red when saved */
+}
+
+[data-theme="dark"] .wishlist-btn:hover {
+  background: rgba(45, 45, 54, 0.95) !important;
+}
+
+[data-theme="dark"] .wishlist-btn:hover i {
+  color: #ff385c !important;
+}
+
+/* Reservation Card Dark Theme Text Contrast */
+[data-theme="dark"] .reservation-muted-text {
+  color: #cbd5e1 !important; /* Clearly readable light slate in dark mode */
+}
+
+[data-theme="dark"] .booking-label {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .total-label {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .total-price-text {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .booking-widget-card .fw-semibold {
+  color: #f8fafc !important;
+}
+
+/* Review Textarea Dark Theme */
+[data-theme="dark"] .review-box-card {
+  background-color: var(--surface-color);
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .review-textarea {
+  background-color: #17171c !important;
+  border: 1.5px solid #363640 !important;
+  color: #f4f4f5 !important;
+  resize: none !important;
+}
+
+[data-theme="dark"] .review-textarea:focus {
+  background-color: #1c1c22 !important;
+  border-color: #ff385c !important;
+  box-shadow: 0 0 0 0.25rem rgba(255, 56, 92, 0.25) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .review-textarea::placeholder {
+  color: #9ca3af !important; /* Clear readable silver-gray placeholder */
+  opacity: 0.95 !important;
+}
+
+/* Dark Mode OpenStreetMap Tile Inversion (Zero API Key Required) */
+[data-theme="dark"] .leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(92%) contrast(92%);
+}
+
+[data-theme="dark"] .leaflet-control-zoom a {
+  background-color: #1f1f26 !important;
+  color: #f3f4f6 !important;
+  border-color: #383844 !important;
+}
+
+[data-theme="dark"] .leaflet-control-zoom a:hover {
+  background-color: #2b2b36 !important;
+  color: #ff385c !important;
+}
+
+[data-theme="dark"] .leaflet-control-attribution {
+  background-color: rgba(20, 20, 26, 0.85) !important;
+  color: #9ca3af !important;
+}
+
+[data-theme="dark"] .leaflet-control-attribution a {
+  color: #cbd5e1 !important;
+}
+
+/* ========================================================
+   Pagination Component Styling (Light & Dark Theme)
+   ======================================================== */
+.pagination {
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+}
+
+.pagination .page-link {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px var(--shadow-color);
+  text-decoration: none;
+}
+
+.pagination .page-link:hover {
+  background-color: var(--border-color);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.pagination .page-item.active .page-link {
+  background: linear-gradient(135deg, #f2242d 0%, #d8141d 100%) !important;
+  border-color: #f2242d !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(242, 36, 45, 0.45) !important;
+  transform: scale(1.05);
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: transparent !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-secondary) !important;
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Dark Mode Specific Pagination Overrides */
+[data-theme="dark"] .pagination .page-link {
+  background-color: #1f1f26 !important;
+  border-color: #383844 !important;
+  color: #e4e4e7 !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .pagination .page-link:hover {
+  background-color: #2b2b36 !important;
+  border-color: #ff385c !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .pagination .page-item.active .page-link {
+  background: linear-gradient(135deg, #f2242d 0%, #d8141d 100%) !important;
+  border-color: #f2242d !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(242, 36, 45, 0.55) !important;
+}
+
+[data-theme="dark"] .pagination .page-item.disabled .page-link {
+  background-color: #16161a !important;
+  border-color: #2a2a32 !important;
+  color: #71717a !important;
+  opacity: 0.45 !important;
+}
+
+[data-theme="dark"] .listing-card .text-muted {
+  color: #9ca3af !important;
+}
+
+/* ========================================================
+   Description Textarea Fixed Dimensions & Non-Resizable
+   ======================================================== */
+.description-textarea,
+textarea.form-control#description {
+  resize: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  height: 130px !important;
+  min-height: 130px !important;
+  max-height: 130px !important;
+  border-radius: 0.75rem !important;
+  line-height: 1.6;
+}
+
+/* Dark Mode File Input Selector Button Styling */
+[data-theme="dark"] input[type="file"]::file-selector-button {
+  background-color: #2b2b35 !important;
+  color: #f3f4f6 !important;
+  border: 1px solid #3f3f4e !important;
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.85rem;
+  margin-right: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] input[type="file"]::file-selector-button:hover {
+  background-color: #383846 !important;
+  color: #ffffff !important;
+  border-color: #ff385c !important;
+}
+
+/* ========================================================
+   Wonderlust Animations & Micro-Interactions Suite
+   ======================================================== */
+
+/* Smooth Page Transitions */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Modern Sleek Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+  border: 2px solid var(--bg-color);
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
+
+/* Navbar Glassmorphism & Compass Spin */
+.navbar.sticky-top {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background-color: rgba(255, 255, 255, 0.88) !important;
+}
+
+[data-theme="dark"] .navbar.sticky-top {
+  background-color: rgba(22, 22, 28, 0.88) !important;
+}
+
+.fa-compass {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.navbar-brand:hover .fa-compass {
+  transform: rotate(360deg);
+}
+
+/* Navbar Links Hover Underline Animation */
+.navbar-nav .nav-link {
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent-color);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 80%;
+  left: 10%;
+}
+
+/* Listing Cards Zoom & Elevation */
+.listing-card {
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
+  will-change: transform, box-shadow;
+}
+
+.listing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px var(--shadow-hover) !important;
+  border-color: rgba(242, 36, 45, 0.25) !important;
+}
+
+.card-images {
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease !important;
+}
+
+.listing-card:hover .card-images {
+  transform: scale(1.06);
+}
+
+/* Filter Pills Spring Hover Animation */
+.filter {
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.filter:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 18px var(--shadow-hover) !important;
+  border-color: var(--accent-color) !important;
+}
+
+.filter:hover div i {
+  transform: scale(1.18);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Buttons Click & Lift Micro-Interactions */
+.btn {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:active {
+  transform: scale(0.97) !important;
+}
+
+.btn-danger,
+.btn-search,
+.add-btn,
+.edit-btn {
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.btn-danger:hover,
+.btn-search:hover,
+.add-btn:hover,
+.edit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(242, 36, 45, 0.35) !important;
+}
+
+/* Floating Wishlist Button Heartbeat Animation */
+@keyframes heartPulse {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.3); }
+  45% { transform: scale(0.9); }
+  65% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.wishlist-btn:hover i {
+  animation: heartPulse 0.55s ease-in-out;
+}
+
+/* Modern Flash Alert Slide-down Animation */
+@keyframes alertSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-25px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modern-flash-alert {
+  animation: alertSlideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] .modern-flash-alert.alert-success {
+  background-color: rgba(22, 101, 52, 0.25) !important;
+  border-color: rgba(34, 197, 94, 0.4) !important;
+  color: #86efac !important;
+}
+
+[data-theme="dark"] .modern-flash-alert.alert-danger {
+  background-color: rgba(153, 27, 27, 0.25) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  color: #fca5a5 !important;
+}
+
+/* Category Badges Hover Micro-interaction */
+.category-badge {
+  transition: all 0.25s ease !important;
+}
+
+.category-badge:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+/* Booking Widget Sticky Depth */
+.booking-widget-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.booking-widget-card:hover {
+  box-shadow: 0 12px 32px var(--shadow-hover) !important;
+}
+
+/* ========================================================
+   Theme-Aware Confirmation Modal Dialog Styling
+   ======================================================== */
+#themeConfirmModal .modal-content {
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 20px 45px var(--shadow-hover) !important;
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  animation: alertSlideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="dark"] #themeConfirmModal .modal-content {
+  background-color: #1b1b22 !important;
+  border-color: #383844 !important;
+  color: #f3f4f6 !important;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.75) !important;
+}
+
+[data-theme="dark"] #themeConfirmModal .btn-outline-secondary {
+  border-color: #4b5563 !important;
+  color: #d1d5db !important;
+}
+
+[data-theme="dark"] #themeConfirmModal .btn-outline-secondary:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+}
+
+/* ========================================================
+   Compact Sleek Navbar Styling (Reduced Size, Text + Icons)
+   ======================================================== */
+.navbar {
+  min-height: 50px !important;
+  background-color: var(--navbar-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding-top: 0.3rem !important;
+  padding-bottom: 0.3rem !important;
+  z-index: 1030;
+}
+
+.brand-icon {
+  color: var(--accent-color);
+  font-size: 1.4rem;
+}
+
+.brand-text {
+  font-size: 0.92rem;
+  color: var(--text-color);
+  letter-spacing: -0.2px;
+}
+
+/* Compact Search Bar */
+.nav-search-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-search-input {
+  height: 33px !important;
+  font-size: 0.82rem !important;
+  padding: 0.25rem 0.75rem !important;
+  padding-right: 5rem !important;
+  border-radius: 50rem !important;
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  width: 220px !important;
+  transition: all 0.25s ease !important;
+}
+
+.nav-search-input:focus {
+  width: 260px !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 2px rgba(242, 36, 45, 0.2) !important;
+}
+
+.btn-search-compact {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 29px;
+  font-size: 0.78rem;
+  padding: 0 0.75rem;
+  border-radius: 50rem;
+  background-color: var(--accent-color) !important;
+  border: none;
+  color: #ffffff !important;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.btn-search-compact:hover {
+  background-color: #d81b22 !important;
+  transform: translateY(-50%) scale(1.02);
+}
+
+/* Compact Nav Links with Text + Icon */
+.compact-nav-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.32rem !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.45rem !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+}
+
+.compact-nav-link i {
+  font-size: 0.82rem;
+  opacity: 0.9;
+}
+
+.compact-nav-link:hover {
+  color: var(--accent-color) !important;
+  background-color: var(--surface-color);
+}
+
+/* Compact Avatar in Header */
+.user-profile-compact {
+  padding: 0.15rem 0.45rem !important;
+}
+
+.compact-avatar-img {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--border-color);
+}
+
+.compact-avatar-initials {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.user-name-label {
+  max-width: 95px;
+  font-size: 0.82rem;
+}
+
+/* Compact Theme Switch Badge */
+.compact-theme-wrapper {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 50rem;
+  height: 29px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.compact-switch {
+  width: 1.85em !important;
+  height: 1em !important;
+  cursor: pointer;
+  margin-top: 0 !important;
+}
+
+.compact-switch-label {
+  font-size: 0.76rem !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  margin-left: 0.2rem;
+}
+
+/* Listing title theme helper */
+.theme-text-heading {
+  color: var(--text-color) !important;
+  transition: color 0.2s ease;
+}
+
+.theme-text-heading:hover {
+  color: var(--accent-color) !important;
+}
+
+/* ========================================================
+   Stylish Modern Footer
+   ======================================================== */
+.main-footer {
+  background-color: var(--surface-color);
+  border-top: 1px solid var(--border-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.main-footer .footer-heading {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+}
+
+.main-footer .footer-links a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.main-footer .footer-links a:hover {
+  color: var(--accent-color);
+  padding-left: 4px;
+}
+
+.social-pill {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: var(--shadow-color);
+}
+
+.social-pill:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+  color: white !important;
+}
+
+.social-pill.fb:hover { background-color: #1877f2 !important; border-color: #1877f2 !important; }
+.social-pill.li:hover { background-color: #0a66c2 !important; border-color: #0a66c2 !important; }
+.social-pill.wa:hover { background-color: #25d366 !important; border-color: #25d366 !important; }
+.social-pill.ph:hover { background-color: #f2242d !important; border-color: #f2242d !important; }
+
+.footer-divider {
+  border-color: var(--border-color);
+  opacity: 0.6;
+}
+
+.hover-red:hover {
+  color: var(--accent-color) !important;
+}
+
+/* ========================================================
+   Print Styling - Receipts Only
+   ======================================================== */
+@media print {
+  /* Hide all background elements on page */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Make visible only active open receipt modal */
+  .modal.show,
+  .modal.show .modal-dialog,
+  .modal.show .modal-content,
+  .modal.show .modal-content * {
+    visibility: visible !important;
+  }
+
+  .modal.show {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+  }
+
+  .modal.show .modal-dialog {
+    max-width: 650px !important;
+    margin: 30px auto !important;
+  }
+
+  .modal.show .modal-content {
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-radius: 12px !important;
+    padding: 10px !important;
+  }
+
+  /* Hide print button, close button X, and modal footer */
+  .modal-footer,
+  .btn-close,
+  .modal-header .btn-close,
+  button {
+    display: none !important;
+  }
+
+  .alert {
+    border: 1px solid #d0d0d0 !important;
+  }
+}
+
+/* ========================================================
+   Form Inputs & Placeholder Theme Support (Light & Dark)
+   ======================================================== */
+.form-control,
+.form-select,
+textarea {
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control::placeholder,
+textarea::placeholder,
+input::placeholder {
+  color: #787878 !important;
+  opacity: 0.85 !important;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 0.25rem rgba(242, 36, 45, 0.25) !important;
+}
+
+/* Dark Mode Form Controls & Visible Placeholder Overrides */
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] textarea {
+  background-color: #242424 !important;
+  color: #f5f5f5 !important;
+  border-color: #444444 !important;
+}
+
+[data-theme="dark"] .form-control::placeholder,
+[data-theme="dark"] textarea::placeholder,
+[data-theme="dark"] input::placeholder {
+  color: #bbbbbb !important;
+  opacity: 1 !important;
+  font-weight: 400;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus,
+[data-theme="dark"] textarea:focus {
+  background-color: #2b2b2b !important;
+  color: #ffffff !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 0.25rem rgba(242, 36, 45, 0.35) !important;
+}
+
+[data-theme="dark"] .form-select option {
+  background-color: #242424 !important;
+  color: #f5f5f5 !important;
+}
+
+[data-theme="dark"] .bg-light,
+[data-theme="dark"] #sandboxCardContainer {
+  background-color: #242424 !important;
+  color: #e0e0e0 !important;
+  border-color: #3f3f3f !important;
+}
+
+[data-theme="dark"] .bg-surface {
+  background-color: #1a1a1a !important;
+  color: #f5f5f5 !important;
+  border-color: #333333 !important;
+}
+
+/* ========================================================
+   Auth Card & Text Dark Theme Support (Login & Signup)
+   ======================================================== */
+.auth-card {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.auth-title {
+  color: var(--text-secondary) !important;
+  transition: color 0.3s ease;
+}
+
+.auth-subtext {
+  color: var(--text-color) !important;
+  opacity: 0.85;
+}
+
+.auth-or-pill {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-theme {
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--surface-color) !important;
+  transition: all 0.25s ease;
+}
+
+.btn-outline-theme:hover {
+  border-color: var(--accent-color) !important;
+  background-color: var(--bg-color) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .auth-card {
+  background-color: #1e1e1e !important;
+  border-color: #333333 !important;
+  color: #f0f0f0 !important;
+}
+
+[data-theme="dark"] .auth-title {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .auth-subtext {
+  color: #cccccc !important;
+  opacity: 1 !important;
+}
+
+[data-theme="dark"] .auth-or-pill {
+  background-color: #1e1e1e !important;
+  color: #aaaaaa !important;
+}
+
+[data-theme="dark"] .btn-outline-theme {
+  color: #e0e0e0 !important;
+  border-color: #444444 !important;
+  background-color: #242424 !important;
+}
+
+[data-theme="dark"] .btn-outline-theme:hover {
+  color: #ffffff !important;
+  background-color: #2c2c2c !important;
+  border-color: var(--accent-color) !important;
+}

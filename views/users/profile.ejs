@@ -1,0 +1,290 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container my-5">
+  <!-- Profile Header Card -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0 rounded-4 p-4 d-flex flex-md-row align-items-center gap-4">
+        <% if (user.profileImage) { %>
+          <img
+            src="<%= user.profileImage %>"
+            alt="Profile Image"
+            class="rounded-circle shadow-sm"
+            style="width: 100px; height: 100px; object-fit: cover;"
+          />
+        <% } else { %>
+          <div
+            class="rounded-circle d-flex align-items-center justify-content-center text-white fs-2 fw-bold shadow-sm"
+            style="width: 100px; height: 100px; background-color: #f2242d;"
+          >
+            <%= user.username.charAt(0).toUpperCase() %>
+          </div>
+        <% } %>
+
+        <div class="flex-grow-1 text-center text-md-start">
+          <h2 class="fw-bold mb-1">Hello, <%= user.username %>!</h2>
+          <p class="text-muted mb-2"><i class="fa-regular fa-envelope me-1"></i><%= user.email %></p>
+          <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
+            <span class="badge bg-danger rounded-pill px-3 py-2"><%= myListings.length %> Listings</span>
+            <span class="badge bg-primary rounded-pill px-3 py-2"><%= myBookings.length %> Bookings</span>
+            <span class="badge bg-secondary rounded-pill px-3 py-2"><%= user.wishlist.length %> Saved Items</span>
+            <span class="badge bg-dark rounded-pill px-3 py-2"><%= myReviews.length %> Reviews</span>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column gap-2">
+          <a href="/listings/newlisting" class="btn btn-outline-danger">
+            <i class="fa-solid fa-plus me-1"></i>Add Listing
+          </a>
+          <a href="/wishlist" class="btn btn-outline-dark">
+            <i class="fa-solid fa-heart text-danger me-1"></i>Wishlist
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Tabs -->
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <ul class="nav nav-pills mb-4 justify-content-center justify-content-md-start" id="profileTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active rounded-pill px-4 me-2" id="listings-tab" data-bs-toggle="tab" data-bs-target="#listings" type="button" role="tab">
+            <i class="fa-solid fa-house-chimney me-2"></i>My Listings (<%= myListings.length %>)
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-pill px-4 me-2" id="bookings-tab" data-bs-toggle="tab" data-bs-target="#bookings" type="button" role="tab">
+            <i class="fa-solid fa-calendar-check me-2"></i>My Trips (<%= myBookings.length %>)
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link rounded-pill px-4" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">
+            <i class="fa-solid fa-star me-2"></i>My Reviews (<%= myReviews.length %>)
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="profileTabContent">
+        <!-- Tab 1: My Listings -->
+        <div class="tab-pane fade show active" id="listings" role="tabpanel">
+          <% if (myListings.length === 0) { %>
+            <div class="card p-5 text-center shadow-sm border-0 rounded-4">
+              <i class="fa-solid fa-hotel fs-1 text-muted mb-3"></i>
+              <h5>You haven't posted any listings yet.</h5>
+              <p class="text-muted">Earn extra income by renting out your room or home on Wonderlust.</p>
+              <div>
+                <a href="/listings/newlisting" class="btn btn-danger px-4">Create First Listing</a>
+              </div>
+            </div>
+          <% } else { %>
+            <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+              <% for (let item of myListings) { %>
+                <div class="col">
+                  <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+                    <img
+                      src="<%= item.image ? item.image.url : '' %>"
+                      class="card-img-top"
+                      alt="Listing Image"
+                      style="height: 180px; object-fit: cover;"
+                    />
+                    <div class="card-body">
+                      <h6 class="card-title fw-bold text-truncate"><%= item.title %></h6>
+                      <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot me-1 text-danger"></i><%= item.location %>, <%= item.country %></p>
+                      <p class="fw-bold mb-3">Rs <%= item.price.toLocaleString("en-IN") %> <span class="text-muted fw-normal small">/night</span></p>
+                      <div class="d-flex justify-content-between gap-2">
+                        <a href="/listings/<%= item._id %>" class="btn btn-sm btn-outline-dark flex-grow-1">View</a>
+                        <a href="/listings/update/<%= item._id %>" class="btn btn-sm btn-outline-primary flex-grow-1">Edit</a>
+                        <form action="/listings/delete/<%= item._id %>?_method=DELETE" method="POST" class="d-inline"
+                          data-confirm="Are you sure you want to permanently delete this listing? This action cannot be undone."
+                          data-confirm-title="Delete Listing"
+                          data-confirm-btn="Yes, Delete Listing">
+                          <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <i class="fa-solid fa-trash"></i>
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Tab 2: My Bookings -->
+        <div class="tab-pane fade" id="bookings" role="tabpanel">
+          <% if (myBookings.length === 0) { %>
+            <div class="card p-5 text-center shadow-sm border-0 rounded-4">
+              <i class="fa-solid fa-plane-departure fs-1 text-muted mb-3"></i>
+              <h5>No trips booked yet!</h5>
+              <p class="text-muted">Explore wonderful destinations and make your first booking today.</p>
+              <div>
+                <a href="/listings" class="btn btn-danger px-4">Start Exploring</a>
+              </div>
+            </div>
+          <% } else { %>
+            <div class="row row-cols-1 g-3">
+              <% for (let b of myBookings) { %>
+                <div class="col">
+                  <div class="card shadow-sm border-0 rounded-4 p-3 d-flex flex-md-row align-items-center gap-3">
+                    <img
+                      src="<%= (b.listing && b.listing.image) ? b.listing.image.url : '' %>"
+                      class="rounded-3"
+                      style="width: 120px; height: 90px; object-fit: cover;"
+                      alt="Listing"
+                    />
+                    <div class="flex-grow-1">
+                      <h6 class="fw-bold mb-1">
+                        <% if (b.listing) { %>
+                          <a href="/listings/<%= b.listing._id %>" class="text-dark text-decoration-none"><%= b.listing.title %></a>
+                        <% } else { %>
+                          <span class="text-muted">Listing no longer available</span>
+                        <% } %>
+                      </h6>
+                      <p class="text-muted small mb-1">
+                        <i class="fa-regular fa-calendar me-1"></i>
+                        <%= new Date(b.checkIn).toLocaleDateString() %> &rarr; <%= new Date(b.checkOut).toLocaleDateString() %>
+                        (<%= b.totalNights %> night<%= b.totalNights > 1 ? 's' : '' %>) &bull; <%= b.guests %> Guest(s)
+                      </p>
+                      <p class="fw-bold mb-0">Total Paid: Rs <%= b.totalPrice.toLocaleString("en-IN") %></p>
+                    </div>
+                    <div class="text-md-end">
+                      <span class="badge <%= b.status === 'confirmed' ? 'bg-success' : (b.status === 'pending' ? 'bg-warning text-dark' : 'bg-secondary') %> px-3 py-2 rounded-pill mb-2 d-inline-block">
+                        <%= b.status.toUpperCase() %>
+                      </span>
+                      <% if (b.status === 'confirmed') { %>
+                        <form action="/bookings/<%= b._id %>/cancel" method="POST"
+                          data-confirm="Are you sure you want to cancel this reservation?"
+                          data-confirm-title="Cancel Trip"
+                          data-confirm-btn="Cancel Reservation">
+                          <button type="submit" class="btn btn-sm btn-outline-danger w-100">Cancel</button>
+                        </form>
+                      <% } %>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Tab 3: My Reviews -->
+        <div class="tab-pane fade" id="reviews" role="tabpanel">
+          <% if (myReviews.length === 0) { %>
+            <div class="card p-5 text-center shadow-sm border-0 rounded-4">
+              <i class="fa-regular fa-comment-dots fs-1 text-muted mb-3"></i>
+              <h5>No reviews given yet.</h5>
+              <p class="text-muted">Leave your feedback on places you've stayed to help the community.</p>
+            </div>
+          <% } else { %>
+            <div class="row row-cols-1 g-3">
+              <% for (let r of myReviews) { %>
+                <div class="col">
+                  <div class="card shadow-sm border-0 rounded-4 p-3">
+                    <!-- Property Info Header -->
+                    <div class="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom flex-wrap gap-2">
+                      <div class="d-flex align-items-center gap-3">
+                        <% if (r.listing && r.listing.image) { %>
+                          <img
+                            src="<%= r.listing.image.url %>"
+                            class="rounded-3 shadow-sm"
+                            style="width: 60px; height: 50px; object-fit: cover;"
+                            alt="Listing"
+                          />
+                        <% } else { %>
+                          <div class="rounded-3 d-flex align-items-center justify-content-center bg-light text-muted" style="width: 60px; height: 50px;">
+                            <i class="fa-solid fa-house"></i>
+                          </div>
+                        <% } %>
+                        <div>
+                          <span class="small text-muted d-block">Review for:</span>
+                          <% if (r.listing) { %>
+                            <a href="/listings/<%= r.listing._id %>" class="fw-bold theme-text-heading text-decoration-none">
+                              <%= r.listing.title %>
+                            </a>
+                            <small class="text-muted d-block"><%= r.listing.location %>, <%= r.listing.country %></small>
+                          <% } else { %>
+                            <span class="fw-semibold text-muted">Property no longer available</span>
+                          <% } %>
+                        </div>
+                      </div>
+
+                      <!-- Edit / Delete Action Buttons -->
+                      <div class="d-flex gap-2 align-items-center">
+                        <button
+                          class="btn btn-sm btn-outline-primary rounded-pill px-3"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#editReviewProfile-<%= r._id %>"
+                          aria-expanded="false"
+                        >
+                          <i class="fa-solid fa-pen-to-square me-1"></i>Edit
+                        </button>
+                        <form
+                          action="/listings/<%= r.listing ? r.listing._id : 'undefined' %>/reviews/<%= r._id %>?_method=DELETE"
+                          method="POST"
+                          class="d-inline"
+                          data-confirm="Are you sure you want to delete this review?"
+                          data-confirm-title="Delete Review"
+                          data-confirm-btn="Yes, Delete Review"
+                        >
+                          <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                            <i class="fa-solid fa-trash me-1"></i>Delete
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+
+                    <!-- Review Content -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <div class="starability-result" data-rating="<%= r.rating %>"></div>
+                      <small class="text-muted"><i class="fa-regular fa-clock me-1"></i><%= new Date(r.createdAt).toLocaleDateString() %></small>
+                    </div>
+                    <p class="card-text mb-0"><%= r.comment %></p>
+
+                    <!-- Collapsible Edit Form -->
+                    <div class="collapse mt-3 pt-3 border-top" id="editReviewProfile-<%= r._id %>">
+                      <form
+                        action="/listings/<%= r.listing ? r.listing._id : 'undefined' %>/reviews/<%= r._id %>?_method=PUT"
+                        method="POST"
+                        class="needs-validation"
+                        novalidate
+                      >
+                        <h6 class="fw-bold mb-2 small text-uppercase text-secondary">Edit Your Feedback</h6>
+                        <div class="mb-2">
+                          <label class="form-label small fw-semibold">Rating (1-5):</label>
+                          <select class="form-select form-select-sm" name="review[rating]" required style="max-width: 200px;">
+                            <option value="5" <%= r.rating === 5 ? 'selected' : '' %>>5 Stars - Amazing</option>
+                            <option value="4" <%= r.rating === 4 ? 'selected' : '' %>>4 Stars - Very good</option>
+                            <option value="3" <%= r.rating === 3 ? 'selected' : '' %>>3 Stars - Average</option>
+                            <option value="2" <%= r.rating === 2 ? 'selected' : '' %>>2 Stars - Not good</option>
+                            <option value="1" <%= r.rating === 1 ? 'selected' : '' %>>1 Star - Terrible</option>
+                          </select>
+                        </div>
+                        <div class="mb-2">
+                          <label class="form-label small fw-semibold">Comment:</label>
+                          <textarea
+                            name="review[comment]"
+                            class="form-control form-control-sm"
+                            rows="2"
+                            style="resize: none;"
+                            required
+                          ><%= r.comment %></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                          <button type="submit" class="btn btn-sm btn-success rounded-pill px-3">Save Changes</button>
+                          <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-bs-toggle="collapse" data-bs-target="#editReviewProfile-<%= r._id %>">Cancel</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

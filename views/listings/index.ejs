@@ -1,0 +1,217 @@
+<% layout("/layouts/boilerplate") %>
+<% if (typeof message !== 'undefined' && message) { %>
+  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <%= message %>
+    <button
+      type="button"
+      class="btn-close btn-close-black"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+<% } %>
+
+<!-- Filters on page -->
+<div id="filters" class="d-flex flex-nowrap overflow-auto p-2 align-items-center">
+    <a href="/listings" class="text-decoration-none">
+      <div class="filter flex-shrink-0 me-2 <%= (!activeCategory) ? 'border-bottom border-2 border-dark fw-bold' : '' %>">
+        <div><i class="fa-solid fa-globe"></i></div>
+        <p>All</p>
+      </div>
+    </a>
+    <a href="/listings?category=trending<%= activeKeyword ? '&keyword=' + encodeURIComponent(activeKeyword) : '' %><%= activeCity ? '&city=' + encodeURIComponent(activeCity) : '' %><%= activeMin ? '&min=' + activeMin : '' %><%= activeMax ? '&max=' + activeMax : '' %>" class="text-decoration-none">
+      <div class="filter flex-shrink-0 me-2 <%= activeCategory === 'trending' ? 'border-bottom border-2 border-dark fw-bold' : '' %>">
+        <div><i class="fa-solid fa-fire"></i></div>
+        <p>Trending</p>
+      </div>
+    </a>
+    <a href="/listings?category=rooms<%= activeKeyword ? '&keyword=' + encodeURIComponent(activeKeyword) : '' %><%= activeCity ? '&city=' + encodeURIComponent(activeCity) : '' %><%= activeMin ? '&min=' + activeMin : '' %><%= activeMax ? '&max=' + activeMax : '' %>" class="text-decoration-none">
+      <div class="filter flex-shrink-0 me-2 <%= activeCategory === 'rooms' ? 'border-bottom border-2 border-dark fw-bold' : '' %>">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>Rooms</p>
+      </div>
+    </a>
+    <a href="/listings?category=iconic_cities<%= activeKeyword ? '&keyword=' + encodeURIComponent(activeKeyword) : '' %><%= activeCity ? '&city=' + encodeURIComponent(activeCity) : '' %><%= activeMin ? '&min=' + activeMin : '' %><%= activeMax ? '&max=' + activeMax : '' %>" class="text-decoration-none">
+      <div class="filter flex-shrink-0 me-2 <%= activeCategory === 'iconic_cities' ? 'border-bottom border-2 border-dark fw-bold' : '' %>">
+        <div><i class="fa-solid fa-mountain-city"></i></div>
+        <p>Iconic Cities</p>
+      </div>
+    </a>
+    <a href="/listings?category=mountain<%= activeKeyword ? '&keyword=' + encodeURIComponent(activeKeyword) : '' %><%= activeCity ? '&city=' + encodeURIComponent(activeCity) : '' %><%= activeMin ? '&min=' + activeMin : '' %><%= activeMax ? '&max=' + activeMax : '' %>" class="text-decoration-none">
+      <div class="filter flex-shrink-0 me-2 <%= activeCategory === 'mountain' ? 'border-bottom border-2 border-dark fw-bold' : '' %>">
+        <div><i class="fa-solid fa-mountain"></i></div>
+        <p>Mountain</p>
+      </div>
+    </a>
+    <a href="/listings?category=castels<%= activeKeyword ? '&keyword=' + encodeURIComponent(activeKeyword) : '' %><%= activeCity ? '&city=' + encodeURIComponent(activeCity) : '' %><%= activeMin ? '&min=' + activeMin : '' %><%= activeMax ? '&max=' + activeMax : '' %>" class="text-decoration-none">
+      <div class="filter flex-shrink-0 me-2 <%= activeCategory === 'castels' ? 'border-bottom border-2 border-dark fw-bold' : '' %>">
+        <div><i class="fa-brands fa-fort-awesome"></i></div>
+        <p>Castels</p>
+      </div>
+    </a>
+    <a href="/listings?category=amazing_pools<%= activeKeyword ? '&keyword=' + encodeURIComponent(activeKeyword) : '' %><%= activeCity ? '&city=' + encodeURIComponent(activeCity) : '' %><%= activeMin ? '&min=' + activeMin : '' %><%= activeMax ? '&max=' + activeMax : '' %>" class="text-decoration-none">
+      <div class="filter flex-shrink-0 me-2 <%= activeCategory === 'amazing_pools' ? 'border-bottom border-2 border-dark fw-bold' : '' %>">
+        <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing Pools</p>
+      </div>
+    </a>
+    <a href="/listings?category=camping<%= activeKeyword ? '&keyword=' + encodeURIComponent(activeKeyword) : '' %><%= activeCity ? '&city=' + encodeURIComponent(activeCity) : '' %><%= activeMin ? '&min=' + activeMin : '' %><%= activeMax ? '&max=' + activeMax : '' %>" class="text-decoration-none">
+      <div class="filter flex-shrink-0 me-2 <%= activeCategory === 'camping' ? 'border-bottom border-2 border-dark fw-bold' : '' %>">
+        <div><i class="fa-solid fa-tree"></i></div>
+        <p>Camping</p>
+      </div>
+    </a>
+    <a href="/listings?category=farms<%= activeKeyword ? '&keyword=' + encodeURIComponent(activeKeyword) : '' %><%= activeCity ? '&city=' + encodeURIComponent(activeCity) : '' %><%= activeMin ? '&min=' + activeMin : '' %><%= activeMax ? '&max=' + activeMax : '' %>" class="text-decoration-none">
+      <div class="filter flex-shrink-0 me-2 <%= activeCategory === 'farms' ? 'border-bottom border-2 border-dark fw-bold' : '' %>">
+        <div><i class="fa-solid fa-cow"></i></div>
+        <p>Farms</p>
+      </div>
+    </a>
+    <a href="/listings?category=arctic<%= activeKeyword ? '&keyword=' + encodeURIComponent(activeKeyword) : '' %><%= activeCity ? '&city=' + encodeURIComponent(activeCity) : '' %><%= activeMin ? '&min=' + activeMin : '' %><%= activeMax ? '&max=' + activeMax : '' %>" class="text-decoration-none">
+      <div class="filter flex-shrink-0 me-2 <%= activeCategory === 'arctic' ? 'border-bottom border-2 border-dark fw-bold' : '' %>">
+        <div><i class="fa-solid fa-snowflake"></i></div>
+        <p>Arctic</p>
+      </div>
+    </a>
+</div>
+
+<!-- Taxes Switch + Filters (City & Price Range) -->
+<div class="d-flex justify-content-between align-items-center flex-wrap mt-2 gap-2">
+  <!-- Tax toggle -->
+  <div class="tx-toggle d-flex align-items-center mb-2 mb-md-0">
+    <div class="form-check-reverse form-switch">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        id="switchCheckDefault"
+      />
+      <label class="form-check-label ms-2" for="switchCheckDefault">
+        Display total after Taxes
+      </label>
+    </div>
+  </div>
+
+  <!-- Filter Form (City + Price Range) -->
+  <form action="/listings" method="GET" class="price-filter-form d-flex align-items-center flex-wrap gap-2">
+    <% if (activeCategory) { %>
+      <input type="hidden" name="category" value="<%= activeCategory %>" />
+    <% } %>
+    <% if (activeKeyword) { %>
+      <input type="hidden" name="keyword" value="<%= activeKeyword %>" />
+    <% } %>
+    
+    <!-- City Filter -->
+    <select name="city" class="form-select form-select-sm" style="width: 140px;">
+      <option value="">All Cities</option>
+      <% if (typeof distinctCities !== 'undefined' && distinctCities.length) { %>
+        <% for (let c of distinctCities) { %>
+          <option value="<%= c %>" <%= (activeCity === c) ? 'selected' : '' %>><%= c %></option>
+        <% } %>
+      <% } %>
+    </select>
+
+    <input
+      type="number"
+      name="min"
+      placeholder="Min Price"
+      class="form-control form-control-sm"
+      style="width: 110px;"
+      value="<%= activeMin || '' %>"
+    />
+    <input
+      type="number"
+      name="max"
+      placeholder="Max Price"
+      class="form-control form-control-sm"
+      style="width: 110px;"
+      value="<%= activeMax || '' %>"
+    />
+    <button type="submit" class="btn btn-sm btn-outline-dark">Filter</button>
+    <% if (activeCategory || activeMin || activeMax || activeKeyword || activeCity) { %>
+      <a href="/listings" class="btn btn-sm btn-link text-muted text-decoration-none">Clear</a>
+    <% } %>
+  </form>
+</div>
+
+<!-- All listings Details -->
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3 g-4">
+  <% for(let listing of allListings) {%>
+    <div class="col position-relative">
+      <a href="/listings/<%= listing.id %>" class="listing-link text-decoration-none">
+        <div class="card listing-card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+          <img
+            src="<%= (listing.image && listing.image.url) ? listing.image.url : '' %>"
+            class="card-img-top card-images"
+            alt="Listing Image"
+            style="height: 18rem; object-fit: cover;"
+          />
+          <div class="card-body">
+            <p class="card-text">
+              <b><%= listing.title %></b><br/>
+              <span class="text-muted small"><%= listing.location %>, <%= listing.country %></span><br />
+              Rs <%= listing.price ? listing.price.toLocaleString("en-IN") : 0 %> /night
+              <i class="tax-info">&nbsp;&nbsp; +18% GST</i>
+            </p> 
+          </div>
+        </div>
+      </a>
+      <% if (currentUser) { %>
+        <% const isFav = currentUser.wishlist && currentUser.wishlist.some(favId => favId.toString() === listing._id.toString()); %>
+        <form action="/listings/<%= listing._id %>/wishlist" method="POST" class="position-absolute top-0 end-0 m-3" style="z-index: 5;">
+          <button type="submit" class="btn wishlist-btn rounded-circle p-1 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;" title="<%= isFav ? 'Remove from Wishlist' : 'Add to Wishlist' %>">
+            <i class="<%= isFav ? 'fa-solid text-danger' : 'fa-regular' %> fa-heart"></i>
+          </button>
+        </form>
+      <% } %>
+    </div>
+  <% } %> 
+</div>
+
+<!-- Pagination Controls -->
+<% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+  <% 
+    const queryParams = [];
+    if (activeCategory) queryParams.push(`category=${encodeURIComponent(activeCategory)}`);
+    if (activeKeyword) queryParams.push(`keyword=${encodeURIComponent(activeKeyword)}`);
+    if (typeof activeCity !== 'undefined' && activeCity) queryParams.push(`city=${encodeURIComponent(activeCity)}`);
+    if (activeMin) queryParams.push(`min=${activeMin}`);
+    if (activeMax) queryParams.push(`max=${activeMax}`);
+    const baseQuery = queryParams.length ? '&' + queryParams.join('&') : '';
+  %>
+  <nav aria-label="Page navigation" class="mt-5 mb-4">
+    <ul class="pagination justify-content-center align-items-center">
+      <% if (currentPage > 1) { %>
+        <li class="page-item">
+          <a class="page-link rounded-pill px-3" href="/listings?page=<%= currentPage - 1 %><%= baseQuery %>">
+            &laquo; Previous
+          </a>
+        </li>
+      <% } else { %>
+        <li class="page-item disabled">
+          <span class="page-link rounded-pill px-3">&laquo; Previous</span>
+        </li>
+      <% } %>
+
+      <% for (let p = 1; p <= totalPages; p++) { %>
+        <li class="page-item <%= p === currentPage ? 'active' : '' %>">
+          <a class="page-link rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;" href="/listings?page=<%= p %><%= baseQuery %>">
+            <%= p %>
+          </a>
+        </li>
+      <% } %>
+
+      <% if (currentPage < totalPages) { %>
+        <li class="page-item">
+          <a class="page-link rounded-pill px-3" href="/listings?page=<%= currentPage + 1 %><%= baseQuery %>">
+            Next &raquo;
+          </a>
+        </li>
+      <% } else { %>
+        <li class="page-item disabled">
+          <span class="page-link rounded-pill px-3">Next &raquo;</span>
+        </li>
+      <% } %>
+    </ul>
+  </nav>
+<% } %>

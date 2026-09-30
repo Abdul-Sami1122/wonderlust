@@ -1,0 +1,647 @@
+<% layout("/layouts/boilerplate") %>
+
+  <script>
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const coordinates = "<%- JSON.stringify((Listing.geometry && Listing.geometry.coordinates && Listing.geometry.coordinates.length === 2) ? Listing.geometry.coordinates : [74.3587, 31.5204]) %>";
+    const Location = "<%= Listing.location %>";
+    const Title = "<%= Listing.title %>";
+  </script>
+
+  <div class="container my-4">
+    <!-- Title -->
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 text-center mb-3">
+        <h2 class="fw-bold">
+          <%= Listing.title %>
+        </h2>
+      </div>
+    </div>
+
+    <!-- Main Content: Listing Details & Booking Widget -->
+    <div class="row justify-content-center g-4">
+      <!-- Left Column: Image & Details -->
+      <div class="col-lg-7 col-md-10">
+        <div class="card listing-card shadow-sm border-0 rounded-4 overflow-hidden position-relative">
+          <img src="<%= Listing.image ? Listing.image.url : '' %>" class="card-img-top show-img" alt="Listing Image"
+            style="max-height: 420px; object-fit: cover;" />
+
+          <!-- Floating Wishlist Button -->
+          <% if (currentUser) { %>
+            <% const isSaved=currentUser.wishlist && currentUser.wishlist.some(id=> id.toString() ===
+              Listing._id.toString()); %>
+              <form action="/listings/<%= Listing._id %>/wishlist" method="POST"
+                class="position-absolute top-0 end-0 m-3" style="z-index: 5;">
+                <button type="submit"
+                  class="btn wishlist-btn rounded-circle p-2 d-flex align-items-center justify-content-center"
+                  style="width: 44px; height: 44px;"
+                  title="<%= isSaved ? 'Remove from Wishlist' : 'Save to Wishlist' %>">
+                  <i class="<%= isSaved ? 'fa-solid text-danger' : 'fa-regular' %> fa-heart fs-5"></i>
+                </button>
+              </form>
+              <% } %>
+
+                <div class="card-body p-4">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                      <h5 class="mb-0 fw-bold">Hosted by <%= Listing.owner ? Listing.owner.username : 'Host' %>
+                      </h5>
+                      <span class="badge category-badge border rounded-pill mt-1">
+                        <%= Listing.category ? Listing.category.replace('_', ' ' ).toUpperCase() : 'HOTEL' %>
+                      </span>
+                      <span class="badge category-badge border rounded-pill mt-1 ms-1">
+                        <i class="fa-solid fa-user-group me-1 text-danger"></i>Up to <%= Listing.maxGuests || 4 %> guests
+                      </span>
+                    </div>
+                    <% if (Listing.owner && Listing.owner.profileImage) { %>
+                      <img src="<%= Listing.owner.profileImage %>" class="rounded-circle shadow-sm"
+                        style="width: 50px; height: 50px; object-fit: cover;" alt="Host" />
+                      <% } %>
+                  </div>
+
+                  <hr />
+                  <h6 class="fw-bold mb-2">About this place</h6>
+                  <p class="card-text text-secondary mb-4" style="white-space: pre-line;">
+                    <%= Listing.description %>
+                  </p>
+
+                  <hr />
+                  <h6 class="fw-bold mb-2">Location details</h6>
+                  <p class="text-secondary mb-0">
+                    <i class="fa-solid fa-location-dot text-danger me-2"></i><b>
+                      <%= Listing.location %>
+                    </b>, <%= Listing.country %>
+                  </p>
+
+                  <!-- Host Edit/Delete Controls -->
+                  <% if (currentUser && Listing.owner && currentUser._id.equals(Listing.owner._id)) { %>
+                    <hr class="mt-4" />
+                    <div class="d-flex gap-2">
+                      <a href="/listings/update/<%= Listing.id %>" class="btn btn-dark flex-grow-1 py-2">
+                        <i class="fa-solid fa-pen-to-square me-1"></i>Edit Listing
+                      </a>
+                      <form action="/listings/delete/<%= Listing.id %>?_method=DELETE" method="POST" class="flex-grow-1"
+                        data-confirm="Are you sure you want to permanently delete this listing? This action cannot be undone."
+                        data-confirm-title="Delete Listing"
+                        data-confirm-btn="Yes, Delete Listing">
+                        <button type="submit" class="btn btn-outline-danger w-100 py-2">
+                          <i class="fa-solid fa-trash me-1"></i>Delete Listing
+                        </button>
+                      </form>
+                    </div>
+                    <% } %>
+                </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Booking Widget Card -->
+      <div class="col-lg-5 col-md-10">
+        <div class="card shadow border rounded-4 p-4 sticky-top booking-widget-card" style="top: 85px; z-index: 10;">
+          <div class="d-flex justify-content-between align-items-baseline mb-3">
+            <div>
+              <span class="fs-3 fw-bold price-text">Rs <%= Listing.price ? Listing.price.toLocaleString("en-IN") : 0 %></span>
+              <span class="reservation-muted-text"> / night</span>
+            </div>
+            <span class="reservation-muted-text small"><i class="fa-solid fa-star text-warning me-1"></i>
+              <%= Listing.reviews.length %> reviews
+            </span>
+          </div>
+
+          <form action="/bookings/<%= Listing._id %>" method="POST" class="needs-validation" novalidate
+            id="bookingForm">
+            <div class="border rounded-3 p-2 mb-3 booking-date-inputs">
+              <div class="row g-2">
+                <div class="col-6">
+                  <label for="checkInDate" class="form-label small fw-semibold booking-label mb-1">CHECK-IN</label>
+                  <input type="date" name="checkIn" id="checkInDate" class="form-control form-control-sm" required />
+                </div>
+                <div class="col-6">
+                  <label for="checkOutDate" class="form-label small fw-semibold booking-label mb-1">CHECKOUT</label>
+                  <input type="date" name="checkOut" id="checkOutDate" class="form-control form-control-sm" required />
+                </div>
+              </div>
+              <div class="mt-2 border-top pt-2">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="guestCount" class="form-label small fw-semibold booking-label mb-0">GUESTS</label>
+                  <span class="small text-muted" style="font-size: 0.75rem;">Max: <%= Listing.maxGuests || 4 %></span>
+                </div>
+                <select name="guests" id="guestCount" class="form-select form-select-sm">
+                  <% const maxCap = Math.max(Listing.maxGuests || 4, 1); %>
+                  <% for (let i = 1; i <= Math.min(maxCap, 12); i++) { %>
+                    <option value="<%= i %>"><%= i %> <%= i === 1 ? 'guest' : 'guests' %></option>
+                  <% } %>
+                  <option value="<%= maxCap + 1 %>"><%= maxCap + 1 %> guests (Exceeds limit)</option>
+                  <option value="<%= maxCap + 2 %>"><%= maxCap + 2 %>+ guests (Exceeds limit)</option>
+                </select>
+                <div id="guestLimitAlert" class="alert alert-danger py-2 px-3 small mt-2 mb-0 d-none" role="alert">
+                  <i class="fa-solid fa-triangle-exclamation me-1"></i>
+                  <span>Guest limit exceeded! This property accommodates up to <b><%= Listing.maxGuests || 4 %></b> guests.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Method Selection -->
+            <div class="mb-3">
+              <label class="form-label small fw-semibold booking-label mb-2">PAYMENT METHOD</label>
+              <div class="d-flex flex-column gap-2">
+                <!-- Online Sandbox Option -->
+                <div class="border rounded-3 p-2 px-3 payment-option-card">
+                  <div class="form-check m-0">
+                    <input class="form-check-input mt-1" type="radio" name="paymentMethod" id="payOnline" value="online" checked>
+                    <label class="form-check-label w-100" for="payOnline" style="cursor: pointer;">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-dark"><i class="fa-solid fa-credit-card text-primary me-2"></i>Online Payment</span>
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill" style="font-size: 0.7rem;">Sandbox Mode</span>
+                      </div>
+                      <div class="text-muted small mt-1" style="font-size: 0.78rem;">
+                        Instant simulated card payment
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Cash on Arrival Option -->
+                <div class="border rounded-3 p-2 px-3 payment-option-card">
+                  <div class="form-check m-0">
+                    <input class="form-check-input mt-1" type="radio" name="paymentMethod" id="payCash" value="cash">
+                    <label class="form-check-label w-100" for="payCash" style="cursor: pointer;">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-dark"><i class="fa-solid fa-money-bill-wave text-success me-2"></i>Cash on Arrival</span>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill" style="font-size: 0.7rem;">Pay on Check-in</span>
+                      </div>
+                      <div class="text-muted small mt-1" style="font-size: 0.78rem;">
+                        Pay directly to host upon check-in
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sandbox Card Details Container (Only shown when Online Payment selected) -->
+            <div id="sandboxCardContainer" class="border rounded-3 p-3 bg-light mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="small fw-bold text-secondary text-uppercase"><i class="fa-solid fa-vial-vial me-1 text-primary"></i>Sandbox Payment Simulator</span>
+                <span class="badge bg-dark text-light" style="font-size: 0.65rem;">TEST MODE</span>
+              </div>
+
+              <!-- Test Outcome Selector -->
+              <div class="mb-2">
+                <label for="sandboxOutcomeSelect" class="form-label text-muted mb-1" style="font-size: 0.72rem; font-weight: 600;">SIMULATE CARD OUTCOME</label>
+                <select name="sandboxOutcome" id="sandboxOutcomeSelect" class="form-select form-select-sm">
+                  <option value="success" selected>🟢 Successful Payment (Approved)</option>
+                  <option value="insufficient_funds">🟡 Insufficient Balance (Declined)</option>
+                  <option value="card_declined">🔴 Card Declined (Blocked by Bank)</option>
+                </select>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label text-muted mb-0" style="font-size: 0.7rem; font-weight: 600;">TEST CARD NUMBER</label>
+                <input type="text" class="form-control form-control-sm bg-white font-monospace text-dark" id="sandboxCardNumber" value="4242 •••• •••• 4242" readonly>
+              </div>
+              <div class="row g-2">
+                <div class="col-6">
+                  <label class="form-label text-muted mb-0" style="font-size: 0.7rem; font-weight: 600;">EXPIRY</label>
+                  <input type="text" class="form-control form-control-sm bg-white font-monospace text-dark" value="12 / 28" readonly>
+                </div>
+                <div class="col-6">
+                  <label class="form-label text-muted mb-0" style="font-size: 0.7rem; font-weight: 600;">CVC</label>
+                  <input type="text" class="form-control form-control-sm bg-white font-monospace text-dark" value="123" readonly>
+                </div>
+              </div>
+              <input type="hidden" name="transactionId" id="sandboxTxnId" value="">
+              <div id="sandboxStatusNote" class="small text-muted mt-2 d-flex align-items-center gap-1" style="font-size: 0.72rem;">
+                <i class="fa-solid fa-circle-check text-success"></i> <span>Simulation: Approved transaction.</span>
+              </div>
+            </div>
+
+            <% if (currentUser) { %>
+              <% if (Listing.owner && currentUser._id.equals(Listing.owner._id)) { %>
+                <div class="alert alert-secondary text-center small mb-3">
+                  <i class="fa-solid fa-circle-info me-1"></i>You are the host of this property.
+                </div>
+                <% } else { %>
+                  <button type="submit" class="btn btn-danger w-100 py-2 fs-5 fw-semibold mb-3"
+                    style="background: linear-gradient(135deg, #f2242d 0%, #d8141d 100%);">
+                    Reserve
+                  </button>
+                  <% } %>
+                    <% } else { %>
+                      <a href="/login" class="btn btn-danger w-100 py-2 fs-5 fw-semibold mb-3">
+                        Log in to Reserve
+                      </a>
+                      <% } %>
+          </form>
+
+          <!-- Live Price Breakdown -->
+          <div id="priceBreakdown" style="display: none;">
+            <p class="text-center reservation-muted-text small mb-3">You won't be charged real money (Sandbox)</p>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="reservation-muted-text">Rs <%= Listing.price %> x <span id="nightsCount">1</span>
+                  nights</span>
+              <span class="fw-semibold">Rs <span id="rawBasePrice">0</span></span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="reservation-muted-text">GST & Services (18%)</span>
+              <span class="fw-semibold">Rs <span id="taxPrice">0</span></span>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-bold fs-5 total-label">Total</span>
+              <span class="fw-bold fs-5 total-price-text">Rs <span id="totalCalculatedPrice">0</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Payment Status Modal Dialog Box -->
+    <div class="modal fade text-start" id="paymentModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg p-3">
+          <div class="modal-body text-center p-4" id="paymentModalBody">
+            <!-- Processing State -->
+            <div id="paymentStateProcessing">
+              <div class="spinner-border text-danger mb-3" style="width: 3.5rem; height: 3.5rem;" role="status">
+                <span class="visually-hidden">Processing...</span>
+              </div>
+              <h5 class="fw-bold text-dark mb-1">Processing Payment...</h5>
+              <p class="text-muted small mb-0">Connecting to Sandbox Payment Gateway. Please do not close this window.</p>
+            </div>
+
+            <!-- Success State -->
+            <div id="paymentStateSuccess" style="display: none;">
+              <div class="mb-3 text-success">
+                <i class="fa-solid fa-circle-check display-1"></i>
+              </div>
+              <h4 class="fw-bold text-dark mb-1">Payment Successful!</h4>
+              <p class="text-muted small mb-3">Your online reservation has been confirmed via Sandbox Checkout.</p>
+              <div class="bg-light p-3 rounded-3 text-start mb-3 small text-dark">
+                <div class="d-flex justify-content-between mb-1">
+                  <span class="text-muted">Amount Paid:</span>
+                  <b class="text-success fs-6">Rs <span id="modalSuccessAmount">0</span></b>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Transaction ID:</span>
+                  <b class="font-monospace text-dark" id="modalSuccessTxn">SB_TXN_...</b>
+                </div>
+              </div>
+              <button type="button" class="btn btn-danger w-100 py-2 fw-semibold" id="btnConfirmRedirect">
+                <i class="fa-solid fa-suitcase-rolling me-1"></i> Go to Dashboard / My Bookings
+              </button>
+            </div>
+
+            <!-- Failed State -->
+            <div id="paymentStateFailed" style="display: none;">
+              <div class="mb-3" id="modalFailedIconContainer">
+                <i class="fa-solid fa-circle-xmark display-1 text-danger"></i>
+              </div>
+              <h4 class="fw-bold text-dark mb-1" id="modalFailedTitle">Payment Failed</h4>
+              <p class="text-muted small mb-3" id="modalFailedMsg">Transaction rejected by issuing bank.</p>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline-secondary flex-grow-1" data-bs-dismiss="modal">
+                  Try Again
+                </button>
+                <button type="button" class="btn btn-success flex-grow-1" id="btnSwitchCash">
+                  Pay via Cash on Arrival
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const pricePerNight = <%= Listing.price || 0 %>;
+        const checkInInput = document.getElementById("checkInDate");
+        const checkOutInput = document.getElementById("checkOutDate");
+        const priceBreakdown = document.getElementById("priceBreakdown");
+        const nightsCount = document.getElementById("nightsCount");
+        const rawBasePrice = document.getElementById("rawBasePrice");
+        const taxPrice = document.getElementById("taxPrice");
+        const totalCalculatedPrice = document.getElementById("totalCalculatedPrice");
+
+        // Payment Method Toggle & Sandbox ID Generator
+        const payOnlineRadio = document.getElementById("payOnline");
+        const payCashRadio = document.getElementById("payCash");
+        const sandboxCardContainer = document.getElementById("sandboxCardContainer");
+        const sandboxTxnIdInput = document.getElementById("sandboxTxnId");
+        const sandboxOutcomeSelect = document.getElementById("sandboxOutcomeSelect");
+        const sandboxCardNumberInput = document.getElementById("sandboxCardNumber");
+        const sandboxStatusNote = document.getElementById("sandboxStatusNote");
+
+        if (sandboxOutcomeSelect) {
+          sandboxOutcomeSelect.addEventListener("change", (e) => {
+            const val = e.target.value;
+            if (val === "success") {
+              if (sandboxCardNumberInput) sandboxCardNumberInput.value = "4242 •••• •••• 4242";
+              if (sandboxStatusNote) sandboxStatusNote.innerHTML = '<i class="fa-solid fa-circle-check text-success"></i> <span>Simulation: Approved transaction.</span>';
+            } else if (val === "insufficient_funds") {
+              if (sandboxCardNumberInput) sandboxCardNumberInput.value = "4000 •••• •••• 0002";
+              if (sandboxStatusNote) sandboxStatusNote.innerHTML = '<i class="fa-solid fa-circle-exclamation text-warning"></i> <span>Simulation: Insufficient funds in account.</span>';
+            } else if (val === "card_declined") {
+              if (sandboxCardNumberInput) sandboxCardNumberInput.value = "4000 •••• •••• 0003";
+              if (sandboxStatusNote) sandboxStatusNote.innerHTML = '<i class="fa-solid fa-circle-xmark text-danger"></i> <span>Simulation: Card declined by bank.</span>';
+            }
+          });
+        }
+
+        function togglePaymentView() {
+          if (payOnlineRadio && payOnlineRadio.checked) {
+            if (sandboxCardContainer) sandboxCardContainer.style.display = "block";
+          } else {
+            if (sandboxCardContainer) sandboxCardContainer.style.display = "none";
+          }
+        }
+
+        if (payOnlineRadio && payCashRadio) {
+          payOnlineRadio.addEventListener("change", togglePaymentView);
+          payCashRadio.addEventListener("change", togglePaymentView);
+          togglePaymentView();
+        }
+
+        // Set min date to today
+        const today = new Date().toISOString().split("T")[0];
+        if (checkInInput) checkInInput.min = today;
+        if (checkOutInput) checkOutInput.min = today;
+
+        function calculateReservation() {
+          if (!checkInInput || !checkOutInput) return;
+          const checkInVal = checkInInput.value;
+          const checkOutVal = checkOutInput.value;
+
+          if (checkInVal && checkOutVal) {
+            const inDate = new Date(checkInVal);
+            const outDate = new Date(checkOutVal);
+            const diffDays = Math.ceil((outDate - inDate) / (1000 * 60 * 60 * 24));
+
+            if (diffDays > 0) {
+              const base = pricePerNight * diffDays;
+              const tax = Math.round(base * 0.18);
+              const total = base + tax;
+
+              nightsCount.innerText = diffDays;
+              rawBasePrice.innerText = base.toLocaleString("en-IN");
+              taxPrice.innerText = tax.toLocaleString("en-IN");
+              totalCalculatedPrice.innerText = total.toLocaleString("en-IN");
+              priceBreakdown.style.display = "block";
+            } else {
+              priceBreakdown.style.display = "none";
+            }
+          }
+        }
+
+        const maxCapacity = <%= Listing.maxGuests || 4 %>;
+        const guestSelect = document.getElementById("guestCount");
+        const guestAlert = document.getElementById("guestLimitAlert");
+        const bookingForm = document.getElementById("bookingForm");
+
+        function validateGuestCapacity() {
+          if (!guestSelect) return true;
+          const selectedGuests = parseInt(guestSelect.value) || 1;
+          if (selectedGuests > maxCapacity) {
+            if (guestAlert) guestAlert.classList.remove("d-none");
+            guestSelect.classList.add("is-invalid");
+            return false;
+          } else {
+            if (guestAlert) guestAlert.classList.add("d-none");
+            guestSelect.classList.remove("is-invalid");
+            return true;
+          }
+        }
+
+        if (guestSelect) {
+          guestSelect.addEventListener("change", validateGuestCapacity);
+        }
+
+        if (bookingForm) {
+          bookingForm.addEventListener("submit", (e) => {
+            if (!validateGuestCapacity()) {
+              e.preventDefault();
+              e.stopPropagation();
+              if (guestAlert) {
+                guestAlert.classList.remove("d-none");
+                guestAlert.scrollIntoView({ behavior: "smooth", block: "center" });
+              }
+              return;
+            }
+
+            if (payOnlineRadio && payOnlineRadio.checked) {
+              e.preventDefault();
+              e.stopPropagation();
+
+              const inVal = checkInInput ? checkInInput.value : "";
+              const outVal = checkOutInput ? checkOutInput.value : "";
+              if (!inVal || !outVal) {
+                alert("Please select check-in and check-out dates.");
+                return;
+              }
+
+              const inD = new Date(inVal);
+              const outD = new Date(outVal);
+              const days = Math.ceil((outD - inD) / (1000 * 60 * 60 * 24));
+              if (days <= 0) {
+                alert("Check-out date must be after check-in date.");
+                return;
+              }
+
+              const base = pricePerNight * days;
+              const tax = Math.round(base * 0.18);
+              const total = base + tax;
+              const generatedTxn = "SB_TXN_" + Math.random().toString(36).substring(2, 9).toUpperCase();
+              if (sandboxTxnIdInput) sandboxTxnIdInput.value = generatedTxn;
+
+              const modalEl = document.getElementById("paymentModal");
+              if (modalEl && typeof bootstrap !== "undefined") {
+                const bsModal = new bootstrap.Modal(modalEl);
+
+                document.getElementById("paymentStateProcessing").style.display = "block";
+                document.getElementById("paymentStateSuccess").style.display = "none";
+                document.getElementById("paymentStateFailed").style.display = "none";
+                bsModal.show();
+
+                const selectedOutcome = sandboxOutcomeSelect ? sandboxOutcomeSelect.value : "success";
+
+                setTimeout(() => {
+                  document.getElementById("paymentStateProcessing").style.display = "none";
+
+                  if (selectedOutcome === "success") {
+                    document.getElementById("modalSuccessAmount").innerText = total.toLocaleString("en-IN");
+                    document.getElementById("modalSuccessTxn").innerText = generatedTxn;
+                    document.getElementById("paymentStateSuccess").style.display = "block";
+
+                    const redirectBtn = document.getElementById("btnConfirmRedirect");
+                    if (redirectBtn) {
+                      redirectBtn.onclick = () => {
+                        bookingForm.submit();
+                      };
+                    }
+                  } else if (selectedOutcome === "insufficient_funds") {
+                    document.getElementById("modalFailedIconContainer").innerHTML = '<i class="fa-solid fa-circle-exclamation display-1 text-warning"></i>';
+                    document.getElementById("modalFailedTitle").innerText = "Insufficient Balance";
+                    document.getElementById("modalFailedMsg").innerText = "Insufficient funds in your sandbox card account. Transaction was declined.";
+                    document.getElementById("paymentStateFailed").style.display = "block";
+                  } else if (selectedOutcome === "card_declined") {
+                    document.getElementById("modalFailedIconContainer").innerHTML = '<i class="fa-solid fa-circle-xmark display-1 text-danger"></i>';
+                    document.getElementById("modalFailedTitle").innerText = "Card Declined";
+                    document.getElementById("modalFailedMsg").innerText = "Card declined by sandbox issuing bank. Transaction rejected.";
+                    document.getElementById("paymentStateFailed").style.display = "block";
+                  }
+                }, 1200);
+
+                const switchCashBtn = document.getElementById("btnSwitchCash");
+                if (switchCashBtn) {
+                  switchCashBtn.onclick = () => {
+                    bsModal.hide();
+                    if (payCashRadio) {
+                      payCashRadio.checked = true;
+                      togglePaymentView();
+                    }
+                  };
+                }
+              } else {
+                bookingForm.submit();
+              }
+            }
+          });
+        }
+
+        if (checkInInput && checkOutInput) {
+          checkInInput.addEventListener("change", () => {
+            checkOutInput.min = checkInInput.value;
+            calculateReservation();
+          });
+          checkOutInput.addEventListener("change", calculateReservation);
+        }
+      });
+    </script>
+
+    <!-- Review Form -->
+    <div class="row justify-content-center mt-5">
+      <div class="col-lg-8 col-md-10 col-sm-11">
+        <% if (currentUser) { %>
+          <div class="card review-box-card shadow-sm border rounded-4 p-4 mb-4">
+            <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+              <i class="fa-regular fa-comment-dots text-danger fs-4"></i>
+              <span>Leave a Review</span>
+            </h5>
+            <form action="/listings/<%= Listing.id %>/reviews" method="POST" class="needs-validation" novalidate>
+              <div class="mb-3">
+                <label for="rating" class="form-label small fw-bold text-uppercase text-secondary mb-1">Rating</label>
+                <fieldset class="starability-slot">
+                  <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                  <label for="first-rate1" title="Terrible">1 star</label>
+                  <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                  <label for="first-rate2" title="Not good">2 stars</label>
+                  <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                  <label for="first-rate3" title="Average">3 stars</label>
+                  <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                  <label for="first-rate4" title="Very good">4 stars</label>
+                  <input type="radio" id="first-rate5" name="review[rating]" value="5" checked />
+                  <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+              </div>
+
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="comment" class="form-label small fw-bold text-uppercase text-secondary mb-0">Your
+                    Review</label>
+                  <!-- <span class="small text-muted">Fixed size</span> -->
+                </div>
+                <textarea name="review[comment]" class="form-control review-textarea" id="comment"
+                  placeholder="Tell others about your experience, the host, and the amenities..." required></textarea>
+                <div class="invalid-feedback">
+                  Please submit some comments for your review.
+                </div>
+              </div>
+
+              <div>
+                <button type="submit" class="btn btn-danger px-4 py-2 fw-semibold review-submit-btn">
+                  <i class="fa-solid fa-paper-plane me-2"></i>Submit Review
+                </button>
+              </div>
+            </form>
+          </div>
+          <% } %>
+      </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <% if (Listing.reviews.length> 0) { %>
+      <div class="row justify-content-center mt-5">
+        <div class="col-lg-8 col-md-10 col-sm-11">
+          <hr />
+          <h4 class="mb-3">All Reviews</h4>
+
+          <div class="row gy-3 gx-3">
+            <% for (review of Listing.reviews) { %>
+              <!-- Removed .ms-3 that caused overflow -->
+              <div class="col-md-6 col-sm-12">
+                <div class="card shadow-sm h-100">
+                  <div class="card-body ms-3 mt-2 mb-2">
+                    <h5 class="card-title">@<%= review.author ? review.author.username : 'Anonymous' %>
+                    </h5>
+                    <p class="starability-result" data-rating="<%= review.rating %>"></p>
+                    <p class="card-text">
+                      <%= review.comment %>
+                    </p>
+                    <% if (currentUser && review.author && currentUser._id.equals(review.author._id)) { %>
+                      <div class="d-flex gap-2 mt-2">
+                        <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#editReview-<%= review._id %>" aria-expanded="false">
+                          Edit
+                        </button>
+                        <form action="/listings/<%= Listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                          method="POST"
+                          data-confirm="Are you sure you want to delete your review?"
+                          data-confirm-title="Delete Review"
+                          data-confirm-btn="Delete Review">
+                          <button class="btn btn-sm btn-outline-danger">
+                            Delete
+                          </button>
+                        </form>
+                      </div>
+
+                      <!-- Collapsible Edit Form -->
+                      <div class="collapse mt-3" id="editReview-<%= review._id %>">
+                        <form action="/listings/<%= Listing._id %>/reviews/<%= review._id %>?_method=PUT" method="POST"
+                          class="needs-validation" novalidate>
+                          <div class="mb-2">
+                            <label class="form-label small fw-semibold">Rating (1-5):</label>
+                            <select class="form-select form-select-sm" name="review[rating]" required>
+                              <option value="5" <%=review.rating===5 ? 'selected' : '' %>>5 Stars - Amazing</option>
+                              <option value="4" <%=review.rating===4 ? 'selected' : '' %>>4 Stars - Very good</option>
+                              <option value="3" <%=review.rating===3 ? 'selected' : '' %>>3 Stars - Average</option>
+                              <option value="2" <%=review.rating===2 ? 'selected' : '' %>>2 Stars - Not good</option>
+                              <option value="1" <%=review.rating===1 ? 'selected' : '' %>>1 Star - Terrible</option>
+                            </select>
+                          </div>
+                          <div class="mb-2">
+                            <label class="form-label small fw-semibold">Comment:</label>
+                            <textarea name="review[comment]" class="form-control form-control-sm" rows="2"
+                              required><%= review.comment %></textarea>
+                          </div>
+                          <button type="submit" class="btn btn-sm btn-success">Update</button>
+                        </form>
+                      </div>
+                      <% } %>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+          </div>
+        </div>
+      </div>
+      <% } %>
+
+        <!-- Map Section -->
+        <div class="row justify-content-center mt-5">
+          <div class="col-lg-8 col-md-10 col-sm-11">
+            <h3 class="mb-3">Where you'll be</h3>
+            <div id="map"></div>
+          </div>
+        </div>
+  </div>
+
+  <script src="/js/map.js"></script>

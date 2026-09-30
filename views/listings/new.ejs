@@ -1,0 +1,156 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <div class="card shadow-sm border rounded-4 p-4 p-md-5 bg-surface theme-aware">
+        <div class="text-center mb-4">
+          <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle mb-3" style="width: 56px; height: 56px;">
+            <i class="fa-solid fa-house-medical fs-4"></i>
+          </div>
+          <h3 class="fw-bold text-dark mb-1">Host a New Property</h3>
+          <p class="text-secondary small">Fill in the details below to publish your property listing</p>
+        </div>
+
+      <form
+        action="/listings"
+        method="POST"
+        class="needs-validation"
+        enctype="multipart/form-data"
+        novalidate
+      >
+        <!-- Title -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            name="listing[title]"
+            id="title"
+            class="form-control"
+            placeholder="Enter a catchy title"
+            required
+          />
+          <div class="valid-feedback">Title looks good!</div>
+          <div class="invalid-feedback">Please enter your title.</div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            name="listing[description]"
+            id="description"
+            class="form-control description-textarea"
+            rows="4"
+            placeholder="Please enter your description here"
+            required
+          ></textarea>
+          <div class="invalid-feedback">Please enter a short description.</div>
+        </div>
+
+        <!-- Image and Category -->
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="image" class="form-label"
+              >Upload image of listing</label
+            >
+            <input
+              type="file"
+              name="listing[image]"
+              id="image"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="dropdown_value" class="form-label"
+              >Select your category</label
+            >
+            <select
+              class="form-select"
+              id="dropdown_value"
+              name="listing[category]"
+              required
+            >
+              <option value="">Select your category</option>
+              <option value="trending">Trending</option>
+              <option value="rooms">Rooms</option>
+              <option value="iconic_cities">Iconic Cities</option>
+              <option value="mountain">Mountain</option>
+              <option value="castels">Castels</option>
+              <option value="amazing_pools">Amazing Pools</option>
+              <option value="camping">Camping</option>
+              <option value="farms">Farms</option>
+              <option value="arctic">Arctic</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Price, Max Guests and Country -->
+        <div class="row g-3 mt-3">
+          <div class="col-md-4">
+            <label for="price" class="form-label">Price (Rs / Night)</label>
+            <input
+              type="number"
+              name="listing[price]"
+              id="price"
+              class="form-control"
+              placeholder="e.g. 1200"
+              required
+            />
+            <div class="invalid-feedback">Please enter a valid price.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="maxGuests" class="form-label">Max Guests</label>
+            <input
+              type="number"
+              name="listing[maxGuests]"
+              id="maxGuests"
+              class="form-control"
+              placeholder="e.g. 4"
+              min="1"
+              max="30"
+              value="4"
+              required
+            />
+            <div class="invalid-feedback">Please specify max guests capacity (at least 1).</div>
+          </div>
+          <div class="col-md-4">
+            <label for="country" class="form-label">Country</label>
+            <input
+              type="text"
+              name="listing[country]"
+              id="country"
+              class="form-control"
+              placeholder="e.g. Pakistan"
+              required
+            />
+            <div class="invalid-feedback">Please enter your country name.</div>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3 mt-3">
+          <label for="location" class="form-label">Location</label>
+          <input
+            type="text"
+            name="listing[location]"
+            id="location"
+            class="form-control"
+            placeholder="e.g. Street No 62, Nafeerabad, Lahore"
+            required
+          />
+          <div class="invalid-feedback">Please enter the location.</div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-danger px-5 py-2.5 fw-semibold add-btn" style="background: linear-gradient(135deg, #f2242d 0%, #d8141d 100%); border: none;">
+            <i class="fa-solid fa-plus me-1"></i>Publish Listing
+          </button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>

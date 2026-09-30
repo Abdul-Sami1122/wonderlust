@@ -1,0 +1,64 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-5 col-md-8 col-sm-10">
+      <div class="card shadow-sm border rounded-4 p-4 p-md-5 auth-card">
+        <div class="text-center mb-4">
+          <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle mb-3" style="width: 56px; height: 56px;">
+            <i class="fa-solid fa-arrow-right-to-bracket fs-4"></i>
+          </div>
+          <h3 class="fw-bold auth-title mb-1">Welcome Back</h3>
+          <p class="auth-subtext small">Log in to your Wonderlust account</p>
+        </div>
+
+        <form action="/login" method="POST" class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label for="username" class="form-label small fw-semibold auth-title">Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="form-control"
+              placeholder="Enter your username"
+              required
+            />
+            <div class="invalid-feedback">Please enter your username.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label small fw-semibold auth-title">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="form-control"
+              placeholder="Enter your password"
+              required
+            />
+            <div class="invalid-feedback">Please enter your password.</div>
+          </div>
+
+          <button type="submit" class="btn btn-danger w-100 py-2.5 fw-semibold mt-3" style="background: linear-gradient(135deg, #f2242d 0%, #d8141d 100%); border: none;">
+            <i class="fa-solid fa-right-to-bracket me-2"></i>Log In
+          </button>
+        </form>
+
+        <div class="position-relative my-4 text-center">
+          <hr class="text-muted" />
+          <span class="position-absolute top-50 start-50 translate-middle px-3 auth-or-pill small">OR</span>
+        </div>
+
+        <a href="/auth/google" class="btn btn-outline-theme w-100 py-2.5 d-flex align-items-center justify-content-center gap-2">
+          <i class="fab fa-google text-danger fs-5"></i>
+          <span class="fw-semibold">Continue with Google</span>
+        </a>
+
+        <div class="text-center mt-4">
+          <span class="auth-subtext small">Don't have an account? </span>
+          <a href="/signup" class="text-danger fw-semibold small text-decoration-none ms-1">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

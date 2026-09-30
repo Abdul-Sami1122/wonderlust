@@ -1,0 +1,54 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1"><i class="fa-solid fa-heart text-danger me-2"></i>My Wishlist</h2>
+      <p class="text-muted">Places you've saved for future adventures</p>
+    </div>
+    <a href="/listings" class="btn btn-outline-dark"><i class="fa-solid fa-compass me-1"></i>Explore More</a>
+  </div>
+
+  <% if (!wishlist || wishlist.length === 0) { %>
+    <div class="card p-5 text-center shadow-sm border-0 rounded-4 my-5">
+      <div class="mb-3">
+        <i class="fa-regular fa-heart fs-1 text-danger"></i>
+      </div>
+      <h4>Your wishlist is empty!</h4>
+      <p class="text-muted">As you search, tap the heart icon on any listing to save your favorites here.</p>
+      <div>
+        <a href="/listings" class="btn btn-danger px-4 mt-2">Start Exploring</a>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+      <% for (let item of wishlist) { %>
+        <div class="col">
+          <div class="card listing-card shadow-sm border-0 rounded-4 overflow-hidden h-100 position-relative">
+            <a href="/listings/<%= item._id %>" class="text-decoration-none text-dark">
+              <img
+                src="<%= item.image ? item.image.url : '' %>"
+                class="card-img-top card-images"
+                alt="Listing"
+                style="height: 18rem; object-fit: cover;"
+              />
+              <div class="card-body">
+                <p class="card-text mb-0">
+                  <b><%= item.title %></b><br />
+                  <span class="text-muted small"><%= item.location %>, <%= item.country %></span><br />
+                  Rs <%= item.price ? item.price.toLocaleString("en-IN") : 0 %> /night
+                </p>
+              </div>
+            </a>
+            <!-- Remove from wishlist button -->
+            <form action="/listings/<%= item._id %>/wishlist" method="POST" class="position-absolute top-0 end-0 m-3">
+              <button type="submit" class="btn btn-light rounded-circle shadow-sm p-2 d-flex align-items-center justify-content-center" title="Remove from wishlist" style="width: 38px; height: 38px;">
+                <i class="fa-solid fa-heart text-danger fs-5"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>

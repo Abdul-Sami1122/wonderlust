@@ -1,0 +1,133 @@
+<nav class="navbar navbar-expand-lg border-bottom sticky-top py-1">
+  <div class="container-fluid px-2 px-md-3 px-xl-4">
+    <!-- Brand Logo -->
+    <a class="navbar-brand d-flex align-items-center me-2 me-md-3 text-decoration-none" href="/listings">
+      <i class="fa-regular fa-compass brand-icon"></i>
+      <span class="brand-text d-none d-sm-inline ms-1 fw-bold">Explore</span>
+    </a>
+
+    <!-- Offcanvas Toggler for Mobile -->
+    <button
+      class="navbar-toggler theme-aware"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#navbarOffcanvas"
+      aria-controls="navbarOffcanvas"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Offcanvas / Main Navbar Content -->
+    <div
+      class="offcanvas offcanvas-end theme-aware"
+      tabindex="-1"
+      id="navbarOffcanvas"
+      aria-labelledby="navbarOffcanvasLabel"
+    >
+      <div class="offcanvas-header border-bottom py-2">
+        <h5 class="offcanvas-title fw-bold fs-6" id="navbarOffcanvasLabel">
+          <i class="fa-regular fa-compass text-danger me-2"></i>Wonderlust
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="offcanvas-body d-flex flex-column flex-lg-row align-items-lg-center justify-content-between py-2 py-lg-0">
+        <!-- Search Bar (Compact & Sleek) -->
+        <div class="navbar-nav me-auto my-2 my-lg-0">
+          <form class="d-flex align-items-center nav-search-form" role="search" method="GET" action="/listings">
+            <input
+              class="form-control nav-search-input"
+              type="search"
+              name="keyword"
+              placeholder="Search Destination"
+              aria-label="Search"
+            />
+            <button class="btn btn-search-compact" type="submit">
+              <i class="fa-solid fa-magnifying-glass me-1"></i><span>Search</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Sleek Compact Navigation Links with Icons + Text -->
+        <div class="navbar-nav d-flex flex-column flex-lg-row align-items-lg-center gap-1 gap-xl-2 mt-2 mt-lg-0">
+          <!-- Add New Listing -->
+          <a class="nav-link compact-nav-link" href="/listings/newlisting">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span>Add New Listing</span>
+          </a>
+
+          <% if (!currentUser) { %>
+            <a class="nav-link compact-nav-link" href="/signup">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>Sign Up</span>
+            </a>
+            <a class="nav-link compact-nav-link" href="/login">
+              <i class="fa-solid fa-arrow-right-to-bracket"></i>
+              <span>Log In</span>
+            </a>
+          <% } else { %>
+            <!-- User Profile Avatar & Name -->
+            <a class="nav-link compact-nav-link user-profile-compact" href="/profile">
+              <% if (currentUser.profileImage) { %>
+                <img
+                  src="<%= currentUser.profileImage %>"
+                  alt="<%= currentUser.username %>"
+                  class="compact-avatar-img"
+                />
+              <% } else { %>
+                <div class="compact-avatar-initials" style="background-color: <%= currentUser.color || '#f2242d' %>;">
+                  <%= currentUser.username.split(' ').map(name => name.charAt(0).toUpperCase()).slice(0, 2).join('') %>
+                </div>
+              <% } %>
+              <span class="fw-semibold text-truncate user-name-label"><%= currentUser.username %></span>
+            </a>
+
+            <!-- Dashboard -->
+            <a class="nav-link compact-nav-link" href="/profile">
+              <i class="fa-regular fa-user"></i>
+              <span>Dashboard</span>
+            </a>
+
+            <!-- My Trips -->
+            <a class="nav-link compact-nav-link" href="/bookings">
+              <i class="fa-solid fa-suitcase-rolling"></i>
+              <span>My Trips</span>
+            </a>
+
+            <!-- Wishlist -->
+            <a class="nav-link compact-nav-link" href="/wishlist">
+              <i class="fa-solid fa-heart text-danger"></i>
+              <span>Wishlist</span>
+            </a>
+
+            <!-- Logout -->
+            <a class="nav-link compact-nav-link" href="/logout">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Logout</span>
+            </a>
+          <% } %>
+
+          <!-- Dark Mode Toggle Switch (Compact) -->
+          <div class="d-flex align-items-center ms-lg-1 py-1 px-2 compact-theme-wrapper">
+            <div class="form-check form-switch m-0 d-flex align-items-center gap-1">
+              <input
+                class="form-check-input compact-switch"
+                type="checkbox"
+                role="switch"
+                id="theme-toggle"
+                onchange="toggleTheme()"
+              />
+              <label class="form-check-label compact-switch-label" for="theme-toggle">Dark Mode</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

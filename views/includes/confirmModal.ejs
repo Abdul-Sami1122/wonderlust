@@ -1,0 +1,22 @@
+<!-- Universal Theme-Aware Confirmation Modal -->
+<div class="modal fade" id="themeConfirmModal" tabindex="-1" aria-labelledby="themeConfirmModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+    <div class="modal-content rounded-4 border-0 shadow-lg p-3 text-center">
+      <div class="modal-body p-4">
+        <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 68px; height: 68px; background: rgba(242, 36, 45, 0.12);">
+          <i class="fa-solid fa-triangle-exclamation text-danger fs-1"></i>
+        </div>
+        <h4 class="fw-bold mb-2" id="themeConfirmModalTitle">Confirm Action</h4>
+        <p class="text-secondary mb-4" id="themeConfirmModalMsg" style="font-size: 0.95rem;">Are you sure you want to proceed? This action cannot be undone.</p>
+        <div class="d-flex gap-2 justify-content-center">
+          <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-danger rounded-pill px-4 py-2 fw-semibold" id="themeConfirmModalBtn">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

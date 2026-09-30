@@ -1,0 +1,172 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1"><i class="fa-solid fa-suitcase-rolling text-danger me-2"></i>My Bookings</h2>
+      <p class="text-muted">Manage your upcoming and past trips</p>
+    </div>
+    <a href="/listings" class="btn btn-outline-dark"><i class="fa-solid fa-compass me-1"></i>Find New Places</a>
+  </div>
+
+  <% if (!bookings || bookings.length === 0) { %>
+    <div class="card p-5 text-center shadow-sm border-0 rounded-4 my-5">
+      <div class="mb-3">
+        <i class="fa-solid fa-plane-departure fs-1 text-muted"></i>
+      </div>
+      <h4>No trips booked... yet!</h4>
+      <p class="text-muted">Time to dust off your bags and start planning your next getaway.</p>
+      <div>
+        <a href="/listings" class="btn btn-danger px-4 mt-2">Explore Destinations</a>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="row row-cols-1 g-4">
+      <% for (let b of bookings) { %>
+        <div class="col">
+          <div class="card shadow-sm border-0 rounded-4 p-4 d-flex flex-column flex-md-row align-items-md-center gap-4">
+            <img
+              src="<%= (b.listing && b.listing.image) ? b.listing.image.url : '' %>"
+              class="rounded-4"
+              style="width: 100%; max-width: 220px; height: 160px; object-fit: cover;"
+              alt="Listing Image"
+            />
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                <span class="badge <%= b.status === 'confirmed' ? 'bg-success' : (b.status === 'pending' ? 'bg-warning text-dark' : 'bg-secondary') %> px-3 py-2 rounded-pill">
+                  <%= b.status.toUpperCase() %>
+                </span>
+                <% if (b.paymentMethod === 'online') { %>
+                  <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill">
+                    <i class="fa-solid fa-credit-card me-1"></i> Paid Online (Sandbox)
+                  </span>
+                <% } else { %>
+                  <span class="badge bg-warning-subtle text-dark border border-warning-subtle px-3 py-2 rounded-pill">
+                    <i class="fa-solid fa-money-bill-wave me-1"></i> Cash on Arrival
+                  </span>
+                <% } %>
+                <span class="text-muted small">Booking ID: #<%= b._id.toString().slice(-6) %></span>
+              </div>
+              <h5 class="fw-bold mb-2">
+                <% if (b.listing) { %>
+                  <a href="/listings/<%= b.listing._id %>" class="text-dark text-decoration-none"><%= b.listing.title %></a>
+                <% } else { %>
+                  <span class="text-muted">Listing Not Available</span>
+                <% } %>
+              </h5>
+              <p class="text-muted mb-2">
+                <i class="fa-solid fa-location-dot text-danger me-1"></i>
+                <%= b.listing ? (b.listing.location + ', ' + b.listing.country) : '' %>
+              </p>
+              <div class="d-flex flex-wrap gap-3 text-secondary small">
+                <span><i class="fa-regular fa-calendar-check me-1"></i><b>Check-in:</b> <%= new Date(b.checkIn).toDateString() %></span>
+                <span><i class="fa-regular fa-calendar-xmark me-1"></i><b>Check-out:</b> <%= new Date(b.checkOut).toDateString() %></span>
+                <span><i class="fa-solid fa-user-group me-1"></i><b>Guests:</b> <%= b.guests %></span>
+              </div>
+            </div>
+
+            <div class="text-md-end border-top border-md-top-0 pt-3 pt-md-0 d-flex flex-column justify-content-between">
+              <div>
+                <span class="text-muted small">Total Price</span>
+                <h4 class="fw-bold text-dark mb-0">Rs <%= b.totalPrice.toLocaleString("en-IN") %></h4>
+                <small class="text-muted d-block mb-3">(Includes 18% GST)</small>
+              </div>
+              <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+                <% if (b.listing) { %>
+                  <a href="/listings/<%= b.listing._id %>" class="btn btn-sm btn-outline-dark">View Listing</a>
+                <% } %>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#receiptModal-<%= b._id %>">
+                  <i class="fa-solid fa-receipt me-1"></i>Receipt
+                </button>
+                <% if (b.status === 'confirmed') { %>
+                  <form action="/bookings/<%= b._id %>/cancel" method="POST"
+                    data-confirm="Are you sure you want to cancel this reservation?"
+                    data-confirm-title="Cancel Trip"
+                    data-confirm-btn="Cancel Reservation">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Cancel Trip</button>
+                  </form>
+                <% } %>
+              </div>
+
+              <!-- Receipt Modal -->
+              <div class="modal fade text-start" id="receiptModal-<%= b._id %>" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content rounded-4 border-0 shadow">
+                    <div class="modal-header border-bottom p-4">
+                      <div>
+                        <h5 class="modal-title fw-bold mb-1"><i class="fa-regular fa-compass text-danger me-2"></i>Wonderlust Receipt</h5>
+                        <p class="text-muted small mb-0">Booking Ref: #<%= b._id.toString().toUpperCase() %></p>
+                      </div>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                      <% if (b.paymentMethod === 'online') { %>
+                        <div class="alert alert-success d-flex align-items-center gap-2 py-2 mb-3">
+                          <i class="fa-solid fa-circle-check fs-5"></i>
+                          <span>Payment Completed via Online Sandbox Payment</span>
+                        </div>
+                      <% } else { %>
+                        <div class="alert alert-warning d-flex align-items-center gap-2 py-2 mb-3">
+                          <i class="fa-solid fa-clock-rotate-left fs-5"></i>
+                          <span>Payment Due on Arrival (Cash Payment)</span>
+                        </div>
+                      <% } %>
+
+                      <div class="mb-3">
+                        <h6 class="fw-bold mb-1"><%= b.listing ? b.listing.title : 'Property' %></h6>
+                        <p class="text-muted small mb-0"><%= b.listing ? (b.listing.location + ', ' + b.listing.country) : '' %></p>
+                      </div>
+
+                      <div class="bg-light p-3 rounded-3 mb-3 small text-dark">
+                        <div class="d-flex justify-content-between mb-1">
+                          <span class="text-muted">Dates:</span>
+                          <b><%= new Date(b.checkIn).toLocaleDateString() %> - <%= new Date(b.checkOut).toLocaleDateString() %></b>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                          <span class="text-muted">Total Nights:</span>
+                          <b><%= b.totalNights %> night(s)</b>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                          <span class="text-muted">Guests:</span>
+                          <b><%= b.guests %> guest(s)</b>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                          <span class="text-muted">Payment Method:</span>
+                          <b><%= b.paymentMethod === 'online' ? 'Online (Sandbox Card)' : 'Cash on Arrival' %></b>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <span class="text-muted">Transaction ID:</span>
+                          <b class="font-monospace"><%= b.transactionId || 'N/A' %></b>
+                        </div>
+                      </div>
+
+                      <div class="d-flex justify-content-between mb-2">
+                        <span>Rate (Rs <%= b.pricePerNight.toLocaleString("en-IN") %> &times; <%= b.totalNights %> nights):</span>
+                        <span>Rs <%= b.basePrice.toLocaleString("en-IN") %></span>
+                      </div>
+                      <div class="d-flex justify-content-between mb-2">
+                        <span>GST & Services (18%):</span>
+                        <span>Rs <%= b.tax.toLocaleString("en-IN") %></span>
+                      </div>
+                      <hr />
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold fs-5"><%= b.paymentMethod === 'online' ? 'Total Paid' : 'Total Amount Due' %></span>
+                        <span class="fw-bold fs-5 text-danger">Rs <%= b.totalPrice.toLocaleString("en-IN") %></span>
+                      </div>
+                    </div>
+                    <div class="modal-footer border-top p-3">
+                      <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.print()">
+                        <i class="fa-solid fa-print me-1"></i>Print Receipt
+                      </button>
+                      <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>

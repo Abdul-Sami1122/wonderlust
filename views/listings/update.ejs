@@ -1,0 +1,164 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <div class="card shadow-sm border rounded-4 p-4 p-md-5 bg-surface theme-aware">
+        <div class="text-center mb-4">
+          <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle mb-3" style="width: 56px; height: 56px;">
+            <i class="fa-solid fa-pen-to-square fs-4"></i>
+          </div>
+          <h3 class="fw-bold text-dark mb-1">Edit Your Listing</h3>
+          <p class="text-secondary small">Update your property details, pricing, or media below</p>
+        </div>
+
+      <form
+        action="/listings/update/<%= updateListing.id %>?_method=PUT"
+        method="POST"
+        class="needs-validation"
+        enctype="multipart/form-data"
+        novalidate
+      >
+        <!-- Title -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            name="listing[title]"
+            id="title"
+            value="<%= updateListing.title %>"
+            class="form-control"
+            required
+          />
+          <div class="valid-feedback">Title looks good!</div>
+          <div class="invalid-feedback">Please enter your title.</div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            name="listing[description]"
+            id="description"
+            class="form-control description-textarea"
+            rows="4"
+            required
+          ><%= updateListing.description %></textarea>
+          <div class="invalid-feedback">Please enter a short description.</div>
+        </div>
+
+        <!-- Original Image -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Original Listing Image</label>
+          <div class="">
+            <img
+              src="<%= originalImageUrl %>"
+              alt="Listing Image"
+              class="img-fluid rounded shadow-sm mt-2"
+              style="max-width: 200px; max-height: 200px"
+            />
+          </div>
+        </div>
+        <div class="row g-3 mb-3">
+          <!-- New Image Upload -->
+          <div class="col-md-6">
+            <label for="image" class="form-label">Upload New Image (Optional)</label>
+            <input
+              type="file"
+              name="listing[image]"
+              id="image"
+              class="form-control"
+            />
+          </div>
+          <!-- Category -->
+          <div class="col-md-6">
+            <label for="dropdown_value" class="form-label">Category</label>
+            <select
+              class="form-select"
+              id="dropdown_value"
+              name="listing[category]"
+              required
+            >
+              <option value="trending" <%= updateListing.category === 'trending' ? 'selected' : '' %>>Trending</option>
+              <option value="rooms" <%= updateListing.category === 'rooms' ? 'selected' : '' %>>Rooms</option>
+              <option value="iconic_cities" <%= updateListing.category === 'iconic_cities' ? 'selected' : '' %>>Iconic Cities</option>
+              <option value="mountain" <%= updateListing.category === 'mountain' ? 'selected' : '' %>>Mountain</option>
+              <option value="castels" <%= updateListing.category === 'castels' ? 'selected' : '' %>>Castels</option>
+              <option value="amazing_pools" <%= updateListing.category === 'amazing_pools' ? 'selected' : '' %>>Amazing Pools</option>
+              <option value="camping" <%= updateListing.category === 'camping' ? 'selected' : '' %>>Camping</option>
+              <option value="farms" <%= updateListing.category === 'farms' ? 'selected' : '' %>>Farms</option>
+              <option value="arctic" <%= updateListing.category === 'arctic' ? 'selected' : '' %>>Arctic</option>
+            </select>
+            <div class="invalid-feedback">Please select a category.</div>
+          </div>
+        </div>
+
+        <!-- Price, Max Guests & Country -->
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label for="price" class="form-label">Price (Rs / Night)</label>
+            <input
+              type="number"
+              name="listing[price]"
+              id="price"
+              class="form-control"
+              value="<%= updateListing.price %>"
+              required
+            />
+            <div class="invalid-feedback">Please enter a valid price.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="maxGuests" class="form-label">Max Guests</label>
+            <input
+              type="number"
+              name="listing[maxGuests]"
+              id="maxGuests"
+              class="form-control"
+              value="<%= updateListing.maxGuests || 4 %>"
+              min="1"
+              max="30"
+              required
+            />
+            <div class="invalid-feedback">Please specify max guests capacity (at least 1).</div>
+          </div>
+          <div class="col-md-4">
+            <label for="country" class="form-label">Country</label>
+            <input
+              type="text"
+              name="listing[country]"
+              id="country"
+              class="form-control"
+              value="<%= updateListing.country %>"
+              required
+            />
+            <div class="invalid-feedback">
+              Please enter a valid country name.
+            </div>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="mt-3 mb-4">
+          <label for="location" class="form-label">Location</label>
+          <input
+            type="text"
+            name="listing[location]"
+            id="location"
+            class="form-control"
+            value="<%= updateListing.location %>"
+            required
+          />
+          <div class="invalid-feedback">Please enter a valid location.</div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-danger px-5 py-2.5 fw-semibold edit-btn" style="background: linear-gradient(135deg, #f2242d 0%, #d8141d 100%); border: none;">
+            <i class="fa-solid fa-arrows-rotate me-1"></i>Update Listing
+          </button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
