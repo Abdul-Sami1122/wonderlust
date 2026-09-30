@@ -192,7 +192,19 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("Error.ejs", { err });
 });
 
-// Defining Port number
-app.listen(8080, () => {
-  console.log("Server runs at port number 8080.");
+// Defining Port number and listening on 0.0.0.0 for LAN/Mobile access
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running locally at: http://localhost:${PORT}`);
+  const os = require("os");
+  const interfaces = os.networkInterfaces();
+  for (let devName in interfaces) {
+    let iface = interfaces[devName];
+    for (let i = 0; i < iface.length; i++) {
+      let alias = iface[i];
+      if (alias.family === "IPv4" && !alias.internal) {
+        console.log(`📱 Access on Mobile (same Wi-Fi): http://${alias.address}:${PORT}`);
+      }
+    }
+  }
 });

@@ -231,9 +231,12 @@ footer {
 /* Filters styling */
 #filters {
     background-color: var(--surface-color);
-    border-radius: 10px;
-    padding: 12px;
-    margin: 20px 0;
+    border-radius: 12px;
+    padding: 10px;
+    margin: 15px 0;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
     border: 1px solid var(--border-color);
@@ -245,16 +248,19 @@ footer {
 }
 
 .filter {
-    display: flex;
+    display: inline-flex !important;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background: var(--filter-bg);
     border: 1px solid var(--filter-border);
-    border-radius: 20px;
-    padding: 12px 16px;
-    margin-right: 8px;
-    min-width: 80px;
+    border-radius: 18px;
+    padding: 10px 14px;
+    margin-right: 6px;
+    min-width: 85px;
+    max-width: 120px;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
     text-align: center;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
@@ -269,16 +275,17 @@ footer {
 }
 
 .filter div i {
-    font-size: 20px;
+    font-size: 18px;
     color: var(--accent-color);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .filter p {
     margin: 0;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 11px;
+    font-weight: 600;
     color: var(--text-color);
+    white-space: nowrap !important;
 }
 
 /* Card Styling */
@@ -1860,4 +1867,55 @@ textarea:focus {
   color: #ffffff !important;
   background-color: #2c2c2c !important;
   border-color: var(--accent-color) !important;
+}
+
+/* ========================================================
+   Offcanvas Drawer & Mobile Navigation Fixes
+   ======================================================== */
+.offcanvas {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border-left: 1px solid var(--border-color) !important;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease, color 0.3s ease;
+}
+
+.offcanvas-header {
+  background-color: var(--navbar-bg);
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+@media (max-width: 991.98px) {
+  .offcanvas.offcanvas-end {
+    width: 290px !important;
+    max-width: 85vw !important;
+  }
+  .offcanvas-body {
+    padding: 1.25rem 1rem !important;
+  }
+  .compact-nav-link {
+    padding: 0.65rem 0.85rem !important;
+    border-radius: 8px;
+    margin-bottom: 0.25rem;
+    width: 100%;
+  }
+  .compact-nav-link:hover {
+    background-color: rgba(242, 36, 45, 0.08);
+  }
+}
+
+[data-theme="dark"] .offcanvas {
+  background-color: #1e1e1e !important;
+  color: #f5f5f5 !important;
+  border-color: #333333 !important;
+}
+
+[data-theme="dark"] .offcanvas-header {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+}
+
+[data-theme="dark"] .offcanvas .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
 }
