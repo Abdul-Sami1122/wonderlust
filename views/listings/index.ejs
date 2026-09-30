@@ -179,23 +179,23 @@
     if (activeMax) queryParams.push(`max=${activeMax}`);
     const baseQuery = queryParams.length ? '&' + queryParams.join('&') : '';
   %>
-  <nav aria-label="Page navigation" class="mt-5 mb-4">
-    <ul class="pagination justify-content-center align-items-center">
+  <nav aria-label="Page navigation" class="mt-4 mb-4">
+    <ul class="pagination justify-content-center align-items-center flex-wrap gap-1">
       <% if (currentPage > 1) { %>
         <li class="page-item">
-          <a class="page-link rounded-pill px-3" href="/listings?page=<%= currentPage - 1 %><%= baseQuery %>">
-            &laquo; Previous
+          <a class="page-link rounded-pill px-3 fw-semibold" href="/listings?page=<%= currentPage - 1 %><%= baseQuery %>">
+            <i class="fa-solid fa-chevron-left me-1"></i>Prev
           </a>
         </li>
       <% } else { %>
         <li class="page-item disabled">
-          <span class="page-link rounded-pill px-3">&laquo; Previous</span>
+          <span class="page-link rounded-pill px-3"><i class="fa-solid fa-chevron-left me-1"></i>Prev</span>
         </li>
       <% } %>
 
       <% for (let p = 1; p <= totalPages; p++) { %>
         <li class="page-item <%= p === currentPage ? 'active' : '' %>">
-          <a class="page-link rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;" href="/listings?page=<%= p %><%= baseQuery %>">
+          <a class="page-link rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 36px; height: 36px;" href="/listings?page=<%= p %><%= baseQuery %>">
             <%= p %>
           </a>
         </li>
@@ -203,13 +203,13 @@
 
       <% if (currentPage < totalPages) { %>
         <li class="page-item">
-          <a class="page-link rounded-pill px-3" href="/listings?page=<%= currentPage + 1 %><%= baseQuery %>">
-            Next &raquo;
+          <a class="page-link rounded-pill px-3 fw-semibold" href="/listings?page=<%= currentPage + 1 %><%= baseQuery %>">
+            Next<i class="fa-solid fa-chevron-right ms-1"></i>
           </a>
         </li>
       <% } else { %>
         <li class="page-item disabled">
-          <span class="page-link rounded-pill px-3">Next &raquo;</span>
+          <span class="page-link rounded-pill px-3">Next<i class="fa-solid fa-chevron-right ms-1"></i></span>
         </li>
       <% } %>
     </ul>
