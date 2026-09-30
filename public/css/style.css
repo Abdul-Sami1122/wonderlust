@@ -2043,3 +2043,70 @@ textarea:focus {
 [data-theme="dark"] .theme-aware-sidebar .btn-close {
   filter: invert(1) grayscale(100%) brightness(200%) !important;
 }
+
+/* ========================================================
+   Modern Footer Dark & Light Theme Contrast Overrides
+   ======================================================== */
+.main-footer {
+  background-color: var(--footer-bg);
+  border-top: 1px solid var(--border-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.logo-text,
+.footer-heading {
+  color: var(--text-secondary) !important;
+  transition: color 0.3s ease;
+}
+
+.footer-links a,
+.footer-bottom-link {
+  color: var(--link-color) !important;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.footer-links a:hover,
+.footer-bottom-link:hover {
+  color: var(--accent-color) !important;
+  text-decoration: underline;
+}
+
+.footer-global-text {
+  color: var(--text-color) !important;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .main-footer {
+  background-color: #1a1a1a !important;
+  border-color: #2c2c2c !important;
+  color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .logo-text,
+[data-theme="dark"] .footer-heading,
+[data-theme="dark"] .footer-copyright-brand {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .footer-links a,
+[data-theme="dark"] .footer-bottom-link {
+  color: #cccccc !important;
+}
+
+[data-theme="dark"] .footer-links a:hover,
+[data-theme="dark"] .footer-bottom-link:hover {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .footer-global-text {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .main-footer .text-secondary {
+  color: #b5b5b5 !important;
+}
